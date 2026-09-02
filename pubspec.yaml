@@ -1,0 +1,7 @@
+name: marktext_plus_ai_translate_plugin
+description: An unverified community AI translation plugin for MarkText Plus.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.0.0

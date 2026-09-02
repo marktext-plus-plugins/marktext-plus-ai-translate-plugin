@@ -1,0 +1,8 @@
+{
+  "id": "com.sugarfatfree.ai-translate",
+  "name": "AI Translate",
+  "version": "0.1.0",
+  "entrypoint": "bin/ai_translate.dart",
+  "minAppVersion": "1.6.0",
+  "capabilities": ["command", "network"]
+}
