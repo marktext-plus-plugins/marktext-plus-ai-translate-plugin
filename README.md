@@ -1,4 +1,6 @@
 # MarkText Plus AI Translate Plugin
+Main application: [MarkText Plus](https://github.com/SugarFatFree/marktext-plus)
+
 
 An open, community plugin that translates selected Markdown through the provider configured by MarkText Plus.
 
