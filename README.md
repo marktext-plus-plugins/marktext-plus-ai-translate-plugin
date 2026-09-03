@@ -3,7 +3,7 @@
 Main application: [MarkText Plus](https://github.com/SugarFatFree/marktext-plus)
 
 Translates the selection, or the whole document, through whichever model you
-have configured in MarkText Plus. Requires MarkText Plus 1.7.0 or newer.
+have configured in MarkText Plus. Requires MarkText Plus 1.6.1 or newer.
 
 This repository is intentionally unverified by MarkText Plus. Read the source
 before you install it — it is one file.
