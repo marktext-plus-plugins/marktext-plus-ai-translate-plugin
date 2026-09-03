@@ -5,6 +5,7 @@
   "runtime": "lua",
   "entrypoint": "plugin.lua",
   "minAppVersion": "1.6.1",
+  "repository": "https://github.com/marktext-plus-plugins/marktext-plus-ai-translate-plugin",
   "permissions": [
     "document.read",
     "ai.chat",
@@ -63,12 +64,14 @@
     {
       "id": "translate.selection",
       "title": "menu.selection",
-      "location": "editor.contextMenu"
+      "location": "editor.contextMenu",
+      "when": "selection"
     },
     {
       "id": "translate.document",
       "title": "menu.document",
-      "location": "editor.contextMenu"
+      "location": "editor.contextMenu",
+      "when": "noSelection"
     }
   ]
 }

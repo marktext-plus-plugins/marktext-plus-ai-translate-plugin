@@ -4,6 +4,22 @@
 -- model the reader configured and never hands over the API key: this script
 -- asks for a completion and gets text back.
 
+-- Offered as a row of chips above the box. A shortcut, not a cage: whatever is
+-- typed instead is used as it stands, so a language not on this list costs
+-- nothing but typing it.
+local COMMON_LANGUAGES = {
+  "English",
+  "简体中文",
+  "繁體中文",
+  "日本語",
+  "한국어",
+  "Français",
+  "Deutsch",
+  "Español",
+  "Русский",
+  "Português",
+}
+
 local function source_for(ctx)
   if ctx.command == "translate.document" then
     return ctx.document
@@ -41,6 +57,7 @@ function on_command(ctx)
     return {
       ask = t("ask.language"),
       default = storage.get("targetLanguage") or "English",
+      choices = COMMON_LANGUAGES,
     }
   end
   storage.set("targetLanguage", ctx.answer)
@@ -49,7 +66,13 @@ function on_command(ctx)
 end
 
 function on_result(ctx, result)
-  -- Side by side, never written back: a translation the reader has not read
-  -- is not an edit they asked for.
-  return { diff = { original = source_for(ctx), result = result } }
+  local language = ctx.answer or ""
+
+  -- A whole document goes beside the document, not on top of it: the reader is
+  -- comparing it against what is on screen. A selection is a few lines, and a
+  -- panel for a few lines is more furniture than answer.
+  if ctx.command == "translate.document" then
+    return { panel = result, title = language }
+  end
+  return { show = result, title = language }
 end
