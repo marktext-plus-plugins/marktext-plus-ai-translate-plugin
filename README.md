@@ -2,18 +2,31 @@
 
 Main application: [MarkText Plus](https://github.com/SugarFatFree/marktext-plus)
 
+[简体中文](docs/i18n/README_zh-CN.md) | [日本語](docs/i18n/README_ja-JP.md) | [한국어](docs/i18n/README_ko-KR.md) | [Deutsch](docs/i18n/README_de-DE.md) | [Français](docs/i18n/README_fr-FR.md) | [Italiano](docs/i18n/README_it-IT.md) | [Русский](docs/i18n/README_ru-RU.md) | [Español](docs/i18n/README_es-ES.md) | [Português](docs/i18n/README_pt-PT.md) | [العربية](docs/i18n/README_ar-SA.md) | [Português (Brasil)](docs/i18n/README_pt-BR.md)
+
 Translates the selection, or the whole document, through whichever model you
 have configured in MarkText Plus. Requires MarkText Plus 1.6.1 or newer.
 
 This repository is intentionally unverified by MarkText Plus. Read the source
 before you install it — it is one file.
 
+**Every release here is a pre-release.** It stays at 0.x, and it changes when
+it needs to; nothing about it is settled yet.
+
 ## What it does
 
-Right-click in the editor and pick **Translate selection** or **Translate
-document**. It asks once which language you want, remembers the answer, and
-shows the translation beside the original. Nothing is written into your
-document: a translation you have not read yet is not an edit you asked for.
+Right-click in the editor. With text selected you are offered **Translate
+selection**; with nothing selected, **Translate document**. Each appears only
+when it applies, so you are never offered the one you did not mean.
+
+It asks once which language you want — the usual ones are there to press, and
+anything you type instead is used as it stands — and remembers your answer for
+next time.
+
+A translated selection comes back in a small window with a copy button. A
+translated document opens in a panel beside your text, where you can read it
+against the original. Nothing is written into your document: a translation you
+have not read yet is not an edit you asked for.
 
 ## How it works
 
