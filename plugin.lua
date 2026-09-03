@@ -1,12 +1,13 @@
--- AI Translate for MarkText Plus.
---
--- The prompt and the flow live here, in the plugin. The editor supplies the
--- model the reader configured and never hands over the API key: this script
--- asks for a completion and gets text back.
+--- AI Translate for MarkText Plus.
+---
+--- The prompt and the flow live here, in the plugin. The editor supplies the
+--- model the reader configured and never hands over the API key: this script
+--- asks for a completion and gets text back.
+local sdk = require("lib.marktext-plus")
 
--- Offered as a row of chips above the box. A shortcut, not a cage: whatever is
--- typed instead is used as it stands, so a language not on this list costs
--- nothing but typing it.
+--- Offered as chips above the box. A shortcut, not a cage: whatever is typed
+--- instead is used as it stands, so a language not on this list costs nothing
+--- but typing it.
 local COMMON_LANGUAGES = {
   "English",
   "简体中文",
@@ -48,21 +49,20 @@ end
 function on_command(ctx)
   local text = source_for(ctx)
   if text == nil or text == "" then
-    return { notify = t("error.empty") }
+    return sdk.notify(sdk.t("error.empty"))
   end
 
-  -- Ask once, then remember: the reader who translates into Japanese today
-  -- is usually translating into Japanese tomorrow.
+  -- Ask once, then remember: the reader who translates into Japanese today is
+  -- usually translating into Japanese tomorrow.
   if ctx.answer == nil then
-    return {
-      ask = t("ask.language"),
-      default = storage.get("targetLanguage") or "English",
+    return sdk.ask(sdk.t("ask.language"), {
+      default = sdk.storage.get("targetLanguage") or "English",
       choices = COMMON_LANGUAGES,
-    }
+    })
   end
-  storage.set("targetLanguage", ctx.answer)
+  sdk.storage.set("targetLanguage", ctx.answer)
 
-  return { ai = build_prompt(text, ctx.answer) }
+  return sdk.ai(build_prompt(text, ctx.answer))
 end
 
 function on_result(ctx, result)
@@ -72,7 +72,7 @@ function on_result(ctx, result)
   -- comparing it against what is on screen. A selection is a few lines, and a
   -- panel for a few lines is more furniture than answer.
   if ctx.command == "translate.document" then
-    return { panel = result, title = language }
+    return sdk.panel(result, language)
   end
-  return { show = result, title = language }
+  return sdk.show(result, language)
 end

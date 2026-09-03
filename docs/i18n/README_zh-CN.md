@@ -6,7 +6,7 @@
 
 通过你在 MarkText Plus 里配置的模型，翻译选中内容或整篇文档。需要 MarkText Plus 1.6.1 或更高版本。
 
-本仓库有意不做官方验证。安装前请先读一遍源码——它只有一个文件。
+本仓库有意不做官方验证。安装前请先读一遍源码——两个短文件而已。
 
 ## 能做什么
 
@@ -18,7 +18,7 @@
 
 ## 怎么做到的
 
-整个插件就是 [`plugin.lua`](../../plugin.lua) 一个文件——不用编译，没有依赖，Windows、macOS、Linux 上都一样。它在编辑器内部的沙箱里运行，没有文件系统、没有网络、没有 `os` 库。
+两个文件：[`plugin.lua`](../../plugin.lua) 和 [`lib/marktext-plus.lua`](../../lib/marktext-plus.lua)——后者是 SDK 的 API 模块，由 `plugin.lua` 用 `require` 加载。不用编译，没有依赖，Windows、macOS、Linux 上都一样。它在编辑器内部的沙箱里运行，没有文件系统、没有网络、没有 `os` 库——`require` 也只能在本插件自己的目录里解析。
 
 **提示词就在插件里**，保住 Markdown 不散架的正是它：
 

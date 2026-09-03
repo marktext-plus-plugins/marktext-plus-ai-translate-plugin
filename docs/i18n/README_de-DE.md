@@ -6,7 +6,7 @@ Hauptanwendung: [MarkText Plus](https://github.com/SugarFatFree/marktext-plus)
 
 Übersetzt die Auswahl oder das ganze Dokument über das Modell, das Sie in MarkText Plus eingerichtet haben. Erfordert MarkText Plus 1.6.1 oder neuer.
 
-Dieses Repository ist bewusst nicht von MarkText Plus geprüft. Lesen Sie den Quelltext, bevor Sie es installieren — es ist eine einzige Datei.
+Dieses Repository ist bewusst nicht von MarkText Plus geprüft. Lesen Sie den Quelltext, bevor Sie es installieren — es sind zwei kurze Dateien.
 
 ## Was es tut
 
@@ -18,7 +18,7 @@ Eine übersetzte Auswahl erscheint in einem kleinen Fenster mit Kopierschaltflä
 
 ## Wie es funktioniert
 
-Das ganze Plug-in ist [`plugin.lua`](../../plugin.lua) — eine Datei, kein Build, keine Abhängigkeiten, auf Windows, macOS und Linux dieselbe. Es läuft im Editor in einer Sandbox ohne Dateisystem, ohne Netzwerk und ohne `os`-Bibliothek.
+Zwei Dateien: [`plugin.lua`](../../plugin.lua) und [`lib/marktext-plus.lua`](../../lib/marktext-plus.lua), das API-Modul des SDK, das `plugin.lua` per `require` lädt, kein Build, keine Abhängigkeiten, auf Windows, macOS und Linux dieselbe. Es läuft im Editor in einer Sandbox ohne Dateisystem, ohne Netzwerk und ohne `os`-Bibliothek.
 
 **Der Prompt steht hier, im Plug-in**, und er ist es, der das Markdown tatsächlich heil lässt:
 

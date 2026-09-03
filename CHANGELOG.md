@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.1.2] - 2026-09-03
+
+Pre-release.
+
+### Changed
+
+- Uses the SDK's API module, `lib/marktext-plus.lua`, loaded with `require`.
+  The plugin now reads as `sdk.show(result, language)` rather than as a table
+  literal whose spelling nothing checks, and it is two files instead of one —
+  which is the point: a plugin was limited to one file until `require` landed.
+
 ## [0.1.1] - 2026-09-03
 
 Pre-release. Nothing here is settled, and the version stays in 0.x until it is.

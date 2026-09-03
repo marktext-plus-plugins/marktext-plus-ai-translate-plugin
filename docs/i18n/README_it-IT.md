@@ -6,7 +6,7 @@ Applicazione principale: [MarkText Plus](https://github.com/SugarFatFree/marktex
 
 Traduce la selezione, o l'intero documento, tramite il modello che avete configurato in MarkText Plus. Richiede MarkText Plus 1.6.1 o successivo.
 
-Questo repository non è deliberatamente verificato da MarkText Plus. Leggete il sorgente prima di installarlo — è un solo file.
+Questo repository non è deliberatamente verificato da MarkText Plus. Leggete il sorgente prima di installarlo — sono due file brevi.
 
 ## Che cosa fa
 
@@ -18,7 +18,7 @@ Una selezione tradotta torna in una piccola finestra con un pulsante per copiare
 
 ## Come funziona
 
-L'intera estensione è [`plugin.lua`](../../plugin.lua) — un file, nessuna compilazione, nessuna dipendenza, identico su Windows, macOS e Linux. Gira dentro l'editor in una sandbox senza file system, senza rete e senza la libreria `os`.
+Due file: [`plugin.lua`](../../plugin.lua) e [`lib/marktext-plus.lua`](../../lib/marktext-plus.lua), il modulo API dell'SDK che `plugin.lua` carica con `require`, nessuna compilazione, nessuna dipendenza, identico su Windows, macOS e Linux. Gira dentro l'editor in una sandbox senza file system, senza rete e senza la libreria `os`.
 
 **Il prompt sta qui, nell'estensione**, ed è ciò che tiene davvero insieme il Markdown:
 

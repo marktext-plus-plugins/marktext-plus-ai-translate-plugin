@@ -8,7 +8,7 @@ Translates the selection, or the whole document, through whichever model you
 have configured in MarkText Plus. Requires MarkText Plus 1.6.1 or newer.
 
 This repository is intentionally unverified by MarkText Plus. Read the source
-before you install it — it is one file.
+before you install it — it is two short files.
 
 **Every release here is a pre-release.** It stays at 0.x, and it changes when
 it needs to; nothing about it is settled yet.
@@ -30,9 +30,12 @@ have not read yet is not an edit you asked for.
 
 ## How it works
 
-The whole plugin is [`plugin.lua`](plugin.lua) — one file, no build, no
-dependencies, the same on Windows, macOS and Linux. It runs inside the editor
-in a sandbox with no file system, no network and no `os` library.
+Two files: [`plugin.lua`](plugin.lua) and
+[`lib/marktext-plus.lua`](lib/marktext-plus.lua), the SDK's API module, which
+`plugin.lua` loads with `require`. No build, no dependencies, the same on
+Windows, macOS and Linux. It runs inside the editor in a sandbox with no file
+system, no network and no `os` library — `require` reaches only inside this
+plugin's own directory.
 
 **The prompt lives here, in the plugin**, and it is what actually keeps
 Markdown intact:
