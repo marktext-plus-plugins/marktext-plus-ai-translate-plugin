@@ -8,7 +8,7 @@ Translates the selection, or the whole document, through whichever model you
 have configured in MarkText Plus. Requires MarkText Plus 1.6.1 or newer.
 
 This repository is intentionally unverified by MarkText Plus. Read the source
-before you install it — it is two short files.
+before you install it — it is three short files.
 
 **Every release here is a pre-release.** It stays at 0.x, and it changes when
 it needs to; nothing about it is settled yet.
@@ -23,16 +23,23 @@ It asks once which language you want — the usual ones are there to press, and
 anything you type instead is used as it stands — and remembers your answer for
 next time.
 
-A translated selection comes back in a small window with a copy button. A
-translated document opens in a panel beside your text, where you can read it
-against the original. Nothing is written into your document: a translation you
-have not read yet is not an edit you asked for.
+A translated selection comes back in a small window with a copy button.
+
+A whole document is translated a paragraph at a time and appears a paragraph at
+a time, in a pane beside your text — so you see the first one while the rest
+are still arriving, and a failure costs one paragraph rather than the file. It
+is drawn the way you are reading: as source beside the source view, rendered
+beside the preview.
+
+Nothing is written into your document: a translation you have not read yet is
+not an edit you asked for.
 
 ## How it works
 
-Two files: [`plugin.lua`](plugin.lua) and
-[`lib/marktext-plus.lua`](lib/marktext-plus.lua), the SDK's API module, which
-`plugin.lua` loads with `require`. No build, no dependencies, the same on
+Three files: [`plugin.lua`](plugin.lua), the SDK's API module
+[`lib/marktext-plus.lua`](lib/marktext-plus.lua), and
+[`lib/blocks.lua`](lib/blocks.lua), which splits a document into paragraphs.
+`plugin.lua` loads both with `require`. No build, no dependencies, the same on
 Windows, macOS and Linux. It runs inside the editor in a sandbox with no file
 system, no network and no `os` library — `require` reaches only inside this
 plugin's own directory.

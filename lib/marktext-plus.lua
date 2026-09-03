@@ -47,6 +47,15 @@ function M.show(text, title) return { show = text, title = title } end
 ---@param title string|nil
 function M.panel(text, title) return { panel = text, title = title } end
 
+--- Fill one of the panes around the document. The editor lays the document
+--- and up to three panes out as a two by two grid.
+---@param text string
+---@param options table|nil  { title = string, slot = "right"|"bottom"|"corner" }
+function M.pane(text, options)
+  options = options or {}
+  return { pane = text, title = options.title, slot = options.slot }
+end
+
 --- Say one line to the reader and stop. Needs `ui.notifications`.
 ---@param message string
 function M.notify(message) return { notify = message } end

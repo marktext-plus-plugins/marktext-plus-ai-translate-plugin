@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.1.3] - 2026-09-03
+
+Pre-release.
+
+### Changed
+
+- A whole document is translated a block at a time and appears a block at a
+  time, in a pane beside the text. It used to go to the model in one request:
+  slow on a long file, past what the model will take on a longer one, and
+  losing everything rather than one paragraph when it failed.
+- The translation is drawn the way the document is being read — as source
+  beside the source view, rendered beside the preview. Raw Markdown next to a
+  rendered preview cannot be compared with what it sits beside.
+
+### Fixed
+
+- Splitting on blank lines no longer cuts a fenced code block in half, and the
+  paragraph above a code block is its own block.
+
 ## [0.1.2] - 2026-09-03
 
 Pre-release.
