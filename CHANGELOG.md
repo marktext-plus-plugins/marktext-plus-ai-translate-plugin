@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.2.0] - 2026-09-03
+## [0.1.1] - 2026-09-03
 
 Pre-release. Nothing here is settled, and the version stays in 0.x until it is.
 
