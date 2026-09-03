@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.0.1] - 2026-09-03
+
+### Fixed
+
+- Both commands were offered at once: "translate the selection" with nothing
+  selected, and "translate the document" while pointing at a paragraph. Each
+  now appears only when it applies.
+- A translated paragraph arrived as a dialog the width of the window showing it
+  beside the original. It is now one small window with the translation in it.
+- A translated document arrived the same way, covering the document it was
+  meant to be read against. It now opens in a panel beside the text.
+
+### Added
+
+- Ten common languages offered as chips on the language question. Anything
+  typed instead is still taken as it stands.
+
+Requires MarkText Plus 1.6.1 or newer.
+
 ## [1.0.0] - 2026-09-03
 
 Rewritten as a script plugin. The first version could not run on a reader's
