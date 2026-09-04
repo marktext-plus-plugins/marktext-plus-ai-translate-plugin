@@ -85,7 +85,10 @@ function on_command(ctx)
 
   -- A block at a time. The whole document in one request is slow, may exceed
   -- what the model will take, and loses everything when it fails.
-  local list = blocks.split(text)
+  -- Split into paragraphs, then grouped back into requests: a paragraph is the
+  -- smallest thing worth translating on its own, but one request per paragraph
+  -- is dozens of round trips for a document that would fit in a handful.
+  local list = blocks.batch(blocks.split(text))
   remember(list)
   storage.set("mode", ctx.view == "source" and "source" or "preview")
 

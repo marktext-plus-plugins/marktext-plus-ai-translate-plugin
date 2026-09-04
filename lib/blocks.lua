@@ -88,4 +88,62 @@ function M.split(document)
   return blocks
 end
 
+--- Whether the block is only a heading line.
+---
+--- A heading on its own tells the model nothing about the register or the
+--- subject it is translating: "## Results" could be a lab report or a football
+--- table. It goes with the text under it.
+local function is_heading(block)
+  if block:sub(1, 1) ~= "#" then return false end
+  return block:find("\n", 1, true) == nil
+end
+
+--- How much text one request carries, in characters.
+---
+--- A paragraph per request meant a request per paragraph: a long document
+--- became dozens of round trips, each paying its own latency, for text that
+--- would have fitted comfortably in one. Batching trades a slightly longer
+--- wait for the first piece against a much shorter wait for the whole.
+---
+--- Not larger, because the point of splitting at all still holds: what fails
+--- costs one batch and not the document, and the reader sees the beginning
+--- while the end is still arriving.
+M.BUDGET = 1500
+
+--- Blocks grouped into requests, in order.
+---
+--- A block longer than the budget travels alone: it cannot be made smaller
+--- without cutting a paragraph in half, which is what the split avoids.
+---@param blocks string[]
+---@param budget integer|nil
+---@return string[]
+function M.batch(blocks, budget)
+  budget = budget or M.BUDGET
+  local batches, current, size = {}, {}, 0
+
+  local function flush()
+    if #current == 0 then return end
+    batches[#batches + 1] = table.concat(current, "\n\n")
+    current, size = {}, 0
+  end
+
+  -- The decision is made when the next block arrives, never after adding one.
+  -- Closing a batch the moment it filled meant a heading that came next had no
+  -- batch left to join and started one of its own — alone, which is the thing
+  -- the heading rule exists to prevent.
+  for _, block in ipairs(blocks) do
+    local length = string.len(block)
+    -- A heading joins whatever it lands next to even when the budget is
+    -- spent: on its own it tells the model nothing about register or subject.
+    if size > 0 and size + length > budget and not is_heading(block) then
+      flush()
+    end
+    current[#current + 1] = block
+    size = size + length + 2
+  end
+  flush()
+
+  return batches
+end
+
 return M

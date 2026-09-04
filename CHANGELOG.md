@@ -14,6 +14,12 @@ for every change to something that has not settled.
   it is working instead of sitting empty for the seconds the first paragraph
   takes. The editor reads a pane action ahead of an `ai` one, so returning
   both means "put this up, then go and ask".
+- **Paragraphs travel together up to a budget**, instead of one request each.
+  A paragraph is the smallest thing worth translating on its own, but a
+  request per paragraph is dozens of round trips for a document that fits in a
+  handful. A fence is never cut, a paragraph over the budget still travels
+  alone, and a heading is never sent by itself — on its own it tells the model
+  nothing about the register or the subject it is translating.
 
 ### Changed
 
