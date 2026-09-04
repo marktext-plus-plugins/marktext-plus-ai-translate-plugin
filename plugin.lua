@@ -13,22 +13,57 @@ local COMMON_LANGUAGES = {
   "Français", "Deutsch", "Español", "Русский", "Português",
 }
 
+--- The prompt used when the reader has not written one of their own.
+local DEFAULT_PROMPT = table.concat({
+  "Translate the Markdown below into {{language}}.",
+  "",
+  "Rules:",
+  "- Preserve every Markdown construct exactly: headings, lists, tables,",
+  "  links, images, footnotes, block quotes and front matter.",
+  "- Do not translate code inside fences or inline code, URLs, file paths,",
+  "  or HTML tag names.",
+  "- Keep the same block order and the same number of blocks.",
+  "- Return only the translated Markdown, with no preamble and no fence",
+  "  wrapped around the whole answer.",
+  "",
+  "Document:",
+  "{{text}}",
+}, "\n")
+
+--- Every occurrence of `needle` replaced with `value`.
+---
+--- Written with find and sub rather than gsub: the replacement is a document,
+--- and gsub reads `%` in a replacement as an escape. A paragraph containing
+--- "100%" would come out mangled, or raise.
+local function replace(subject, needle, value)
+  local out, pos = "", 1
+  while true do
+    local at, stop = subject:find(needle, pos, true)
+    if at == nil then
+      return out .. subject:sub(pos)
+    end
+    out = out .. subject:sub(pos, at - 1) .. value
+    pos = stop + 1
+  end
+end
+
+--- The prompt for one batch, from the reader's template.
+---
+--- The template is theirs to change — a model that keeps mistranslating a
+--- particular kind of document is fixed by saying so in the prompt, and
+--- nobody can do that from outside the plugin. `{{text}}` is where the source
+--- goes; a template that forgets it gets the source appended, because a
+--- prompt with nothing to translate in it is worse than an untidy one.
 local function build_prompt(text, language)
-  return table.concat({
-    "Translate the Markdown below into " .. language .. ".",
-    "",
-    "Rules:",
-    "- Preserve every Markdown construct exactly: headings, lists, tables,",
-    "  links, images, footnotes, block quotes and front matter.",
-    "- Do not translate code inside fences or inline code, URLs, file paths,",
-    "  or HTML tag names.",
-    "- Keep the same block order and the same number of blocks.",
-    "- Return only the translated Markdown, with no preamble and no fence",
-    "  wrapped around the whole answer.",
-    "",
-    "Document:",
-    text,
-  }, "\n")
+  local template = storage.get("prompt")
+  if template == nil or template == "" then
+    template = DEFAULT_PROMPT
+  end
+  local prompt = replace(template, "{{language}}", language)
+  if prompt:find("{{text}}", 1, true) == nil then
+    return prompt .. "\n\n" .. text
+  end
+  return replace(prompt, "{{text}}", text)
 end
 
 --- The blocks of the document being translated, kept between calls.
