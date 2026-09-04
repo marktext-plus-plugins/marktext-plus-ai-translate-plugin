@@ -1,10 +1,16 @@
---- AI Translate for MarkText Plus.
+--- AI Assistant for MarkText Plus: writing, proofreading, translation.
 ---
---- The prompt and the flow live here, in the plugin. The editor supplies the
+--- The prompts and the flow live here, in the plugin. The editor supplies the
 --- model the reader configured and never hands over the API key: this script
 --- asks for a completion and gets text back.
+---
+--- Writing and proofreading show their result in a pane with an Apply button
+--- rather than writing it straight into the document. What a model returns is
+--- worth reading before it lands in what you were writing, and Apply goes
+--- through the editor's history, so one press of undo takes it back.
 local sdk = require("lib.marktext-plus")
 local blocks = require("lib.blocks")
+local prompts = require("lib.prompts")
 
 --- Offered as chips above the box. A shortcut, not a cage: whatever is typed
 --- instead is used as it stands.
@@ -12,59 +18,6 @@ local COMMON_LANGUAGES = {
   "English", "简体中文", "繁體中文", "日本語", "한국어",
   "Français", "Deutsch", "Español", "Русский", "Português",
 }
-
---- The prompt used when the reader has not written one of their own.
-local DEFAULT_PROMPT = table.concat({
-  "Translate the Markdown below into ${language}.",
-  "",
-  "Rules:",
-  "- Preserve every Markdown construct exactly: headings, lists, tables,",
-  "  links, images, footnotes, block quotes and front matter.",
-  "- Do not translate code inside fences or inline code, URLs, file paths,",
-  "  or HTML tag names.",
-  "- Keep the same block order and the same number of blocks.",
-  "- Return only the translated Markdown, with no preamble and no fence",
-  "  wrapped around the whole answer.",
-  "",
-  "Document:",
-  "${text}",
-}, "\n")
-
---- Every occurrence of `needle` replaced with `value`.
----
---- Written with find and sub rather than gsub: the replacement is a document,
---- and gsub reads `%` in a replacement as an escape. A paragraph containing
---- "100%" would come out mangled, or raise.
-local function replace(subject, needle, value)
-  local out, pos = "", 1
-  while true do
-    local at, stop = subject:find(needle, pos, true)
-    if at == nil then
-      return out .. subject:sub(pos)
-    end
-    out = out .. subject:sub(pos, at - 1) .. value
-    pos = stop + 1
-  end
-end
-
---- The prompt for one batch, from the reader's template.
----
---- The template is theirs to change — a model that keeps mistranslating a
---- particular kind of document is fixed by saying so in the prompt, and
---- nobody can do that from outside the plugin. `${text}` is where the source
---- goes; a template that forgets it gets the source appended, because a
---- prompt with nothing to translate in it is worse than an untidy one.
-local function build_prompt(text, language)
-  local template = storage.get("prompt")
-  if template == nil or template == "" then
-    template = DEFAULT_PROMPT
-  end
-  local prompt = replace(template, "${language}", language)
-  if prompt:find("${text}", 1, true) == nil then
-    return prompt .. "\n\n" .. text
-  end
-  return replace(prompt, "${text}", text)
-end
 
 --- The blocks of the document being translated, kept between calls.
 ---
@@ -98,12 +51,60 @@ local function block_at(index)
   end
 end
 
-function on_command(ctx)
-  local whole = ctx.command == "translate.document"
-  local text = whole and ctx.document or ctx.selection
-  if text == nil or text == "" then
-    return sdk.notify(sdk.t("error.empty"))
+--- What the command works on: the selection if there is one, else the whole
+--- document.
+local function subject(ctx)
+  local selection = ctx.selection
+  if selection ~= nil and selection ~= "" then return selection, selection end
+  -- The second value is what Apply would replace; empty means everything.
+  return ctx.document or "", ""
+end
+
+local function view_of(ctx)
+  return ctx.view == "source" and "source" or "preview"
+end
+
+-- ---------------------------------------------------------------- writing --
+
+local function start_writing(ctx)
+  if ctx.answer == nil then
+    return sdk.ask(sdk.t("ask.instruction"), { choices = prompts.WRITING_IDEAS })
   end
+  local text, replaces = subject(ctx)
+  storage.set("replaces", replaces)
+  storage.set("mode", view_of(ctx))
+  -- An empty document is a blank page: the instruction is the whole request.
+  return {
+    pane = "",
+    title = sdk.t("menu.write"),
+    slot = "right",
+    as = view_of(ctx),
+    ai = prompts.writing(text, ctx.answer),
+  }
+end
+
+-- ------------------------------------------------------------ proofreading --
+
+local function start_proofreading(ctx)
+  local text, replaces = subject(ctx)
+  if text == "" then return sdk.notify(sdk.t("error.empty")) end
+  storage.set("replaces", replaces)
+  storage.set("mode", view_of(ctx))
+  return {
+    pane = "",
+    title = sdk.t("menu.proofread"),
+    slot = "right",
+    as = view_of(ctx),
+    ai = prompts.proofreading(text),
+  }
+end
+
+-- -------------------------------------------------------------- translation --
+
+local function start_translation(ctx)
+  local whole = ctx.command == "translate.document"
+  local text = whole and (ctx.document or "") or (ctx.selection or "")
+  if text == "" then return sdk.notify(sdk.t("error.empty")) end
 
   -- Ask once, then remember.
   if ctx.answer == nil then
@@ -115,37 +116,57 @@ function on_command(ctx)
   storage.set("targetLanguage", ctx.answer)
 
   if not whole then
-    return sdk.ai(build_prompt(text, ctx.answer))
+    return sdk.ai(prompts.translation(text, ctx.answer))
   end
 
   -- A block at a time. The whole document in one request is slow, may exceed
-  -- what the model will take, and loses everything when it fails.
-  -- Split into paragraphs, then grouped back into requests: a paragraph is the
-  -- smallest thing worth translating on its own, but one request per paragraph
-  -- is dozens of round trips for a document that would fit in a handful.
+  -- what the model will take, and loses everything when it fails. Grouped back
+  -- into batches, because one request per paragraph is dozens of round trips
+  -- for a document that would fit in a handful.
   local list = blocks.batch(blocks.split(text))
   remember(list)
-  storage.set("mode", ctx.view == "source" and "source" or "preview")
+  storage.set("mode", view_of(ctx))
 
   -- The pane opens empty, before the first request rather than after it. The
   -- editor reads `pane` ahead of `ai`, so it puts the pane up and then makes
   -- the call — and an empty pane with a request outstanding is what the
-  -- editor draws as "working". Asking first meant nothing happened on screen
-  -- until the first block came back, which for a long paragraph is several
-  -- seconds of a menu item that appeared to do nothing.
+  -- editor draws as "working".
   return {
     pane = "",
     title = ctx.answer,
     slot = "right",
-    as = storage.get("mode") or "preview",
-    ai = build_prompt(list[1] or text, ctx.answer),
+    as = view_of(ctx),
+    ai = prompts.translation(list[1] or text, ctx.answer),
   }
 end
 
-function on_result(ctx, result)
-  local language = ctx.answer or ""
+-- ------------------------------------------------------------------ entry --
 
-  if ctx.command ~= "translate.document" then
+function on_command(ctx)
+  local command = ctx.command
+  if command == "ai.write" then return start_writing(ctx) end
+  if command == "ai.proofread" then return start_proofreading(ctx) end
+  return start_translation(ctx)
+end
+
+function on_result(ctx, result)
+  local command = ctx.command
+
+  -- Writing and proofreading offer to replace what they were looking at.
+  if command == "ai.write" or command == "ai.proofread" then
+    return {
+      pane = result,
+      title = command == "ai.write" and sdk.t("menu.write")
+        or sdk.t("menu.proofread"),
+      slot = "right",
+      as = storage.get("mode") or "preview",
+      apply = true,
+      replaces = storage.get("replaces") or "",
+    }
+  end
+
+  local language = ctx.answer or ""
+  if command ~= "translate.document" then
     return sdk.show(result, language)
   end
 
@@ -163,7 +184,7 @@ function on_result(ctx, result)
     append = at > 1,
   }
   if next_block ~= nil then
-    pane.ai = build_prompt(next_block, language)
+    pane.ai = prompts.translation(next_block, language)
   end
   return pane
 end

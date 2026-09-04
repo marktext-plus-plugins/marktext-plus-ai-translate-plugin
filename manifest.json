@@ -1,6 +1,6 @@
 {
   "id": "com.marktextplus.ai-translate",
-  "name": "AI Translate",
+  "name": "AI Assistant",
   "description": "plugin.description",
   "version": "0.1.3",
   "runtime": "lua",
@@ -9,132 +9,270 @@
   "repository": "https://github.com/marktext-plus-plugins/marktext-plus-ai-translate-plugin",
   "permissions": [
     "document.read",
+    "document.write",
     "ai.chat",
     "storage.local",
     "ui.contextMenu",
+    "ui.sidebar",
     "ui.settings",
     "ui.notifications"
   ],
   "defaultLocale": "en",
   "locales": {
     "en": {
-      "AI Translate": "AI Translate",
-      "plugin.description": "Translate the selection, or the whole document a paragraph at a time, with the model you configured.",
+      "AI Assistant": "AI Assistant",
+      "plugin.description": "Rewrite, proofread and translate with the model you configured — shown for you to read before it goes into your document.",
+      "menu.write": "AI writing",
+      "menu.proofread": "AI proofreading",
       "menu.selection": "Translate selection",
       "menu.document": "Translate document",
+      "ask.instruction": "What should it do?",
       "ask.language": "Target language",
-      "error.empty": "Select some text first, or use Translate document",
-      "settings.prompt": "Prompt sent to the model. ${language} is what you chose; ${text} is where the source goes."
+      "error.empty": "Select some text first, or put the caret in a document",
+      "settings.writingSystem": "Writing · system prompt",
+      "settings.writingUser": "Writing · user prompt",
+      "settings.proofreadingSystem": "Proofreading · system prompt",
+      "settings.proofreadingUser": "Proofreading · user prompt",
+      "settings.translationSystem": "Translation · system prompt",
+      "settings.translationUser": "Translation · user prompt"
     },
     "zh": {
-      "AI Translate": "AI 翻译",
-      "plugin.description": "用你配置的大模型翻译选中内容，或逐段翻译整篇文档。",
+      "AI Assistant": "AI 助手",
+      "plugin.description": "用你配置的大模型改写、纠错、翻译——结果先给你看，你说采用才写进文档。",
+      "menu.write": "AI 写作",
+      "menu.proofread": "AI 纠错",
       "menu.selection": "翻译选中内容",
       "menu.document": "翻译全文",
+      "ask.instruction": "要它做什么？",
       "ask.language": "目标语言",
-      "error.empty": "请先选中文本，或使用“翻译全文”",
-      "settings.prompt": "发送给大模型的提示词。${language} 是你选的目标语言，${text} 是原文所在的位置。"
+      "error.empty": "请先选中文本，或把光标放进一篇文档",
+      "settings.writingSystem": "写作 · 系统提示词",
+      "settings.writingUser": "写作 · 用户提示词",
+      "settings.proofreadingSystem": "纠错 · 系统提示词",
+      "settings.proofreadingUser": "纠错 · 用户提示词",
+      "settings.translationSystem": "翻译 · 系统提示词",
+      "settings.translationUser": "翻译 · 用户提示词"
     },
     "ja": {
-      "AI Translate": "AI 翻訳",
-      "plugin.description": "設定したモデルで、選択範囲を訳すか、文書全体を段落ごとに訳します。",
+      "AI Assistant": "AI アシスタント",
+      "plugin.description": "設定したモデルで書き直し、校正、翻訳をします。結果はまず読めるように示され、採用したときだけ文書に入ります。",
+      "menu.write": "AI 執筆",
+      "menu.proofread": "AI 校正",
       "menu.selection": "選択範囲を翻訳",
       "menu.document": "ドキュメントを翻訳",
+      "ask.instruction": "何をしますか？",
       "ask.language": "翻訳先の言語",
-      "error.empty": "先にテキストを選択するか、ドキュメント全体を翻訳してください",
-      "settings.prompt": "モデルに送るプロンプト。${language} は選んだ言語、${text} は原文が入る位置です。"
+      "error.empty": "先にテキストを選択するか、ドキュメントにカーソルを置いてください",
+      "settings.writingSystem": "執筆 · システムプロンプト",
+      "settings.writingUser": "執筆 · ユーザープロンプト",
+      "settings.proofreadingSystem": "校正 · システムプロンプト",
+      "settings.proofreadingUser": "校正 · ユーザープロンプト",
+      "settings.translationSystem": "翻訳 · システムプロンプト",
+      "settings.translationUser": "翻訳 · ユーザープロンプト"
     },
     "ko": {
-      "AI Translate": "AI 번역",
-      "plugin.description": "설정한 모델로 선택한 부분을 번역하거나, 문서 전체를 문단 단위로 번역합니다.",
+      "AI Assistant": "AI 어시스턴트",
+      "plugin.description": "설정한 모델로 고쳐 쓰고, 교정하고, 번역합니다. 결과는 먼저 읽어 볼 수 있게 보여 주고, 받아들일 때만 문서에 들어갑니다.",
+      "menu.write": "AI 글쓰기",
+      "menu.proofread": "AI 교정",
       "menu.selection": "선택 영역 번역",
       "menu.document": "문서 번역",
+      "ask.instruction": "무엇을 할까요?",
       "ask.language": "대상 언어",
-      "error.empty": "먼저 텍스트를 선택하거나 문서 번역을 사용하세요",
-      "settings.prompt": "모델에 보내는 프롬프트. ${language}는 고른 언어, ${text}는 원문이 들어갈 자리입니다."
+      "error.empty": "먼저 텍스트를 선택하거나 문서에 커서를 두세요",
+      "settings.writingSystem": "글쓰기 · 시스템 프롬프트",
+      "settings.writingUser": "글쓰기 · 사용자 프롬프트",
+      "settings.proofreadingSystem": "교정 · 시스템 프롬프트",
+      "settings.proofreadingUser": "교정 · 사용자 프롬프트",
+      "settings.translationSystem": "번역 · 시스템 프롬프트",
+      "settings.translationUser": "번역 · 사용자 프롬프트"
     },
     "de": {
-      "AI Translate": "KI-Übersetzung",
-      "plugin.description": "Übersetzt die Auswahl – oder das ganze Dokument Absatz für Absatz – mit dem von Ihnen eingerichteten Modell.",
+      "AI Assistant": "KI-Assistent",
+      "plugin.description": "Umschreiben, Korrekturlesen und Übersetzen mit dem Modell, das Sie eingerichtet haben — erst zu lesen, dann ins Dokument.",
+      "menu.write": "KI-Schreiben",
+      "menu.proofread": "KI-Korrektur",
       "menu.selection": "Auswahl übersetzen",
       "menu.document": "Dokument übersetzen",
+      "ask.instruction": "Was soll geschehen?",
       "ask.language": "Zielsprache",
-      "error.empty": "Markieren Sie zuerst Text, oder übersetzen Sie das ganze Dokument",
-      "settings.prompt": "Der Prompt an das Modell. ${language} ist Ihre Zielsprache, ${text} die Stelle für den Ausgangstext."
+      "error.empty": "Markieren Sie zuerst Text, oder setzen Sie den Cursor in ein Dokument",
+      "settings.writingSystem": "Schreiben · System-Prompt",
+      "settings.writingUser": "Schreiben · Benutzer-Prompt",
+      "settings.proofreadingSystem": "Korrektur · System-Prompt",
+      "settings.proofreadingUser": "Korrektur · Benutzer-Prompt",
+      "settings.translationSystem": "Übersetzung · System-Prompt",
+      "settings.translationUser": "Übersetzung · Benutzer-Prompt"
     },
     "fr": {
-      "AI Translate": "Traduction IA",
-      "plugin.description": "Traduit la sélection, ou le document entier paragraphe par paragraphe, avec le modèle que vous avez configuré.",
+      "AI Assistant": "Assistant IA",
+      "plugin.description": "Réécrire, relire et traduire avec le modèle que vous avez configuré — présenté à lire avant d’entrer dans votre document.",
+      "menu.write": "Écriture IA",
+      "menu.proofread": "Relecture IA",
       "menu.selection": "Traduire la sélection",
       "menu.document": "Traduire le document",
+      "ask.instruction": "Que doit-il faire ?",
       "ask.language": "Langue cible",
-      "error.empty": "Sélectionnez d’abord du texte, ou traduisez tout le document",
-      "settings.prompt": "L’invite envoyée au modèle. ${language} est la langue choisie, ${text} l’emplacement du texte source."
+      "error.empty": "Sélectionnez d’abord du texte, ou placez le curseur dans un document",
+      "settings.writingSystem": "Écriture · invite système",
+      "settings.writingUser": "Écriture · invite utilisateur",
+      "settings.proofreadingSystem": "Relecture · invite système",
+      "settings.proofreadingUser": "Relecture · invite utilisateur",
+      "settings.translationSystem": "Traduction · invite système",
+      "settings.translationUser": "Traduction · invite utilisateur"
     },
     "it": {
-      "AI Translate": "Traduzione IA",
-      "plugin.description": "Traduce la selezione, o l’intero documento un paragrafo alla volta, con il modello che hai configurato.",
+      "AI Assistant": "Assistente IA",
+      "plugin.description": "Riscrive, corregge e traduce con il modello che hai configurato: prima da leggere, poi nel documento.",
+      "menu.write": "Scrittura IA",
+      "menu.proofread": "Correzione IA",
       "menu.selection": "Traduci la selezione",
       "menu.document": "Traduci il documento",
+      "ask.instruction": "Che cosa deve fare?",
       "ask.language": "Lingua di destinazione",
-      "error.empty": "Seleziona prima del testo, oppure traduci l’intero documento",
-      "settings.prompt": "Il prompt inviato al modello. ${language} è la lingua scelta, ${text} il posto del testo di partenza."
+      "error.empty": "Seleziona prima del testo, o metti il cursore in un documento",
+      "settings.writingSystem": "Scrittura · prompt di sistema",
+      "settings.writingUser": "Scrittura · prompt utente",
+      "settings.proofreadingSystem": "Correzione · prompt di sistema",
+      "settings.proofreadingUser": "Correzione · prompt utente",
+      "settings.translationSystem": "Traduzione · prompt di sistema",
+      "settings.translationUser": "Traduzione · prompt utente"
     },
     "ru": {
-      "AI Translate": "ИИ-перевод",
-      "plugin.description": "Переводит выделенное — или весь документ по абзацу — той моделью, которую вы настроили.",
+      "AI Assistant": "ИИ-помощник",
+      "plugin.description": "Переписывает, вычитывает и переводит той моделью, которую вы настроили, — сначала показывает, и только потом в документ.",
+      "menu.write": "ИИ-письмо",
+      "menu.proofread": "ИИ-вычитка",
       "menu.selection": "Перевести выделенное",
       "menu.document": "Перевести документ",
+      "ask.instruction": "Что нужно сделать?",
       "ask.language": "Язык перевода",
-      "error.empty": "Сначала выделите текст или переведите весь документ",
-      "settings.prompt": "Запрос к модели. ${language} — выбранный язык, ${text} — место для исходного текста."
+      "error.empty": "Сначала выделите текст или поставьте курсор в документ",
+      "settings.writingSystem": "Письмо · системный запрос",
+      "settings.writingUser": "Письмо · пользовательский запрос",
+      "settings.proofreadingSystem": "Вычитка · системный запрос",
+      "settings.proofreadingUser": "Вычитка · пользовательский запрос",
+      "settings.translationSystem": "Перевод · системный запрос",
+      "settings.translationUser": "Перевод · пользовательский запрос"
     },
     "es": {
-      "AI Translate": "Traducción con IA",
-      "plugin.description": "Traduce la selección, o el documento entero párrafo a párrafo, con el modelo que hayas configurado.",
+      "AI Assistant": "Asistente de IA",
+      "plugin.description": "Reescribe, corrige y traduce con el modelo que hayas configurado: primero para leerlo, después al documento.",
+      "menu.write": "Escritura con IA",
+      "menu.proofread": "Corrección con IA",
       "menu.selection": "Traducir la selección",
       "menu.document": "Traducir el documento",
+      "ask.instruction": "¿Qué debe hacer?",
       "ask.language": "Idioma de destino",
-      "error.empty": "Selecciona primero algo de texto, o traduce el documento entero",
-      "settings.prompt": "La instrucción enviada al modelo. ${language} es el idioma elegido; ${text}, el lugar del texto original."
+      "error.empty": "Selecciona primero algo de texto, o pon el cursor en un documento",
+      "settings.writingSystem": "Escritura · instrucción de sistema",
+      "settings.writingUser": "Escritura · instrucción de usuario",
+      "settings.proofreadingSystem": "Corrección · instrucción de sistema",
+      "settings.proofreadingUser": "Corrección · instrucción de usuario",
+      "settings.translationSystem": "Traducción · instrucción de sistema",
+      "settings.translationUser": "Traducción · instrucción de usuario"
     },
     "pt": {
-      "AI Translate": "Tradução com IA",
-      "plugin.description": "Traduz a seleção, ou o documento inteiro parágrafo a parágrafo, com o modelo que configurou.",
+      "AI Assistant": "Assistente de IA",
+      "plugin.description": "Reescreve, revê e traduz com o modelo que configurou — primeiro para ler, depois para o documento.",
+      "menu.write": "Escrita com IA",
+      "menu.proofread": "Revisão com IA",
       "menu.selection": "Traduzir a seleção",
       "menu.document": "Traduzir o documento",
+      "ask.instruction": "O que deve fazer?",
       "ask.language": "Idioma de destino",
-      "error.empty": "Selecione primeiro algum texto, ou traduza o documento inteiro",
-      "settings.prompt": "A instrução enviada ao modelo. ${language} é o idioma escolhido; ${text}, o lugar do texto de partida."
+      "error.empty": "Selecione primeiro algum texto, ou ponha o cursor num documento",
+      "settings.writingSystem": "Escrita · instrução de sistema",
+      "settings.writingUser": "Escrita · instrução de utilizador",
+      "settings.proofreadingSystem": "Revisão · instrução de sistema",
+      "settings.proofreadingUser": "Revisão · instrução de utilizador",
+      "settings.translationSystem": "Tradução · instrução de sistema",
+      "settings.translationUser": "Tradução · instrução de utilizador"
     },
     "pt_BR": {
-      "AI Translate": "Tradução com IA",
-      "plugin.description": "Traduz a seleção, ou o documento inteiro parágrafo a parágrafo, com o modelo que você configurou.",
+      "AI Assistant": "Assistente de IA",
+      "plugin.description": "Reescreve, revisa e traduz com o modelo que você configurou — primeiro para ler, depois para o documento.",
+      "menu.write": "Escrita com IA",
+      "menu.proofread": "Revisão com IA",
       "menu.selection": "Traduzir a seleção",
       "menu.document": "Traduzir o documento",
+      "ask.instruction": "O que deve fazer?",
       "ask.language": "Idioma de destino",
-      "error.empty": "Selecione primeiro algum texto, ou traduza o documento inteiro",
-      "settings.prompt": "A instrução enviada ao modelo. ${language} é o idioma escolhido; ${text}, o lugar do texto de origem."
+      "error.empty": "Selecione primeiro algum texto, ou ponha o cursor em um documento",
+      "settings.writingSystem": "Escrita · instrução de sistema",
+      "settings.writingUser": "Escrita · instrução de usuário",
+      "settings.proofreadingSystem": "Revisão · instrução de sistema",
+      "settings.proofreadingUser": "Revisão · instrução de usuário",
+      "settings.translationSystem": "Tradução · instrução de sistema",
+      "settings.translationUser": "Tradução · instrução de usuário"
     },
     "ar": {
-      "AI Translate": "الترجمة بالذكاء الاصطناعي",
-      "plugin.description": "يترجم ما حدَّدته، أو المستند كله فقرةً فقرة، بالنموذج الذي أعددته.",
+      "AI Assistant": "مساعد الذكاء الاصطناعي",
+      "plugin.description": "يعيد الصياغة ويصحِّح ويترجم بالنموذج الذي أعددته — يُعرض عليك أولًا لتقرأه، ثم يدخل مستندك.",
+      "menu.write": "الكتابة بالذكاء الاصطناعي",
+      "menu.proofread": "التدقيق بالذكاء الاصطناعي",
       "menu.selection": "ترجمة المحدَّد",
       "menu.document": "ترجمة المستند",
+      "ask.instruction": "ما المطلوب؟",
       "ask.language": "لغة الهدف",
-      "error.empty": "حدِّد نصًّا أولًا، أو استعمل ترجمة المستند",
-      "settings.prompt": "الموجِّه المُرسَل إلى النموذج. ${language} هي اللغة التي اخترتها، و${text} موضع النص الأصلي."
+      "error.empty": "حدِّد نصًّا أولًا، أو ضع المؤشر في مستند",
+      "settings.writingSystem": "الكتابة · موجِّه النظام",
+      "settings.writingUser": "الكتابة · موجِّه المستخدم",
+      "settings.proofreadingSystem": "التدقيق · موجِّه النظام",
+      "settings.proofreadingUser": "التدقيق · موجِّه المستخدم",
+      "settings.translationSystem": "الترجمة · موجِّه النظام",
+      "settings.translationUser": "الترجمة · موجِّه المستخدم"
     }
   },
   "settings": [
     {
-      "key": "prompt",
-      "title": "settings.prompt",
+      "key": "writingSystem",
+      "title": "settings.writingSystem",
       "type": "text",
-      "default": "Translate the Markdown below into ${language}.\n\nRules:\n- Preserve every Markdown construct exactly: headings, lists, tables,\n  links, images, footnotes, block quotes and front matter.\n- Do not translate code inside fences or inline code, URLs, file paths,\n  or HTML tag names.\n- Keep the same block order and the same number of blocks.\n- Return only the translated Markdown, with no preamble and no fence\n  wrapped around the whole answer.\n\nDocument:\n${text}"
+      "default": "You rewrite Markdown to a brief the reader gives you.\n\nRules:\n- Follow the brief. It is the whole of what was asked for.\n- Preserve every Markdown construct: headings, lists, tables, links,\n  images, footnotes, block quotes and front matter.\n- Do not touch code inside fences or inline code, URLs or file paths.\n- Write in the language the text is already in, unless told otherwise.\n- Return only the rewritten Markdown: no preamble, no explanation, and no\n  fence wrapped around the whole answer."
+    },
+    {
+      "key": "writingUser",
+      "title": "settings.writingUser",
+      "type": "text",
+      "default": "Brief: {{instruction}}\n\nText:\n{{text}}"
+    },
+    {
+      "key": "proofreadingSystem",
+      "title": "settings.proofreadingSystem",
+      "type": "text",
+      "default": "You correct Markdown: spelling, typing slips, grammar and punctuation.\n\nRules:\n- Correct mistakes. Do not rewrite anything that is merely not how you\n  would have put it — the voice is the author's.\n- Preserve every Markdown construct, and the block order.\n- Do not touch code inside fences or inline code, URLs or file paths.\n- Keep the language the text is written in.\n- Return only the corrected Markdown: no preamble, no list of what you\n  changed, and no fence wrapped around the whole answer."
+    },
+    {
+      "key": "proofreadingUser",
+      "title": "settings.proofreadingUser",
+      "type": "text",
+      "default": "Text:\n{{text}}"
+    },
+    {
+      "key": "translationSystem",
+      "title": "settings.translationSystem",
+      "type": "text",
+      "default": "You translate Markdown into {{language}}.\n\nRules:\n- Preserve every Markdown construct exactly: headings, lists, tables,\n  links, images, footnotes, block quotes and front matter.\n- Do not translate code inside fences or inline code, URLs, file paths,\n  or HTML tag names.\n- Keep the same block order and the same number of blocks.\n- Return only the translated Markdown, with no preamble and no fence\n  wrapped around the whole answer."
+    },
+    {
+      "key": "translationUser",
+      "title": "settings.translationUser",
+      "type": "text",
+      "default": "Document:\n{{text}}"
     }
   ],
   "menus": [
+    {
+      "id": "ai.write",
+      "title": "menu.write",
+      "location": "editor.contextMenu"
+    },
+    {
+      "id": "ai.proofread",
+      "title": "menu.proofread",
+      "location": "editor.contextMenu"
+    },
     {
       "id": "translate.selection",
       "title": "menu.selection",
@@ -146,6 +284,13 @@
       "title": "menu.document",
       "location": "editor.contextMenu",
       "when": "noSelection"
+    }
+  ],
+  "panels": [
+    {
+      "id": "ai.write",
+      "title": "menu.write",
+      "icon": "edit_note"
     }
   ]
 }

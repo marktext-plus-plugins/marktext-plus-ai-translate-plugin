@@ -5,6 +5,30 @@
 Pre-release, and updated in place while it stays one — the tag does not move
 for every change to something that has not settled.
 
+### Updated 2026-09-04 — three commands, not one
+
+The plugin is **AI Assistant** now: writing, proofreading and translation.
+Same repository, same id, so it arrives as an update.
+
+- **AI writing.** Right-click, say what it should do — or pick one of the
+  usual answers — and the rewrite appears in a pane with an Apply button. With
+  nothing selected it rewrites the document; with nothing in the document it
+  is a blank page, which is what the side bar icon is for.
+- **AI proofreading.** Spelling, typing slips, grammar and punctuation, and
+  nothing else: the voice is the author's. No question to answer, because
+  correcting mistakes is the whole brief.
+- **Both are shown before they are applied.** What a model returns is worth
+  reading before it lands in what you were writing, and Apply goes through the
+  editor's history, so one press of undo takes it back.
+- **Six prompts, all yours.** A system prompt and a user prompt for each
+  command — what the model is, and what it is being given, are two different
+  things to want to change. `{{text}}` is where the source goes, `{{language}}`
+  what you chose, `{{instruction}}` what you asked for. Double braces rather
+  than `${...}`, which is interpolation in Dart, in JavaScript template
+  strings and in the shell, and shares a character with KaTeX.
+- Translation is unchanged, and still offers nothing to apply: replacing a
+  document with its translation is not what anyone means by "translate".
+
 ### Updated 2026-09-04
 
 - **It says what it is, in the plugin list**, in the twelve languages the
