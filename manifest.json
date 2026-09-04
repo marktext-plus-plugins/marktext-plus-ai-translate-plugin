@@ -24,7 +24,7 @@
       "menu.document": "Translate document",
       "ask.language": "Target language",
       "error.empty": "Select some text first, or use Translate document",
-      "settings.prompt": "Prompt sent to the model. {{language}} is what you chose; {{text}} is where the source goes."
+      "settings.prompt": "Prompt sent to the model. ${language} is what you chose; ${text} is where the source goes."
     },
     "zh": {
       "AI Translate": "AI 翻译",
@@ -33,7 +33,7 @@
       "menu.document": "翻译全文",
       "ask.language": "目标语言",
       "error.empty": "请先选中文本，或使用“翻译全文”",
-      "settings.prompt": "发送给大模型的提示词。{{language}} 是你选的目标语言，{{text}} 是原文所在的位置。"
+      "settings.prompt": "发送给大模型的提示词。${language} 是你选的目标语言，${text} 是原文所在的位置。"
     },
     "ja": {
       "AI Translate": "AI 翻訳",
@@ -42,7 +42,7 @@
       "menu.document": "ドキュメントを翻訳",
       "ask.language": "翻訳先の言語",
       "error.empty": "先にテキストを選択するか、ドキュメント全体を翻訳してください",
-      "settings.prompt": "モデルに送るプロンプト。{{language}} は選んだ言語、{{text}} は原文が入る位置です。"
+      "settings.prompt": "モデルに送るプロンプト。${language} は選んだ言語、${text} は原文が入る位置です。"
     },
     "ko": {
       "AI Translate": "AI 번역",
@@ -51,7 +51,7 @@
       "menu.document": "문서 번역",
       "ask.language": "대상 언어",
       "error.empty": "먼저 텍스트를 선택하거나 문서 번역을 사용하세요",
-      "settings.prompt": "모델에 보내는 프롬프트. {{language}}는 고른 언어, {{text}}는 원문이 들어갈 자리입니다."
+      "settings.prompt": "모델에 보내는 프롬프트. ${language}는 고른 언어, ${text}는 원문이 들어갈 자리입니다."
     },
     "de": {
       "AI Translate": "KI-Übersetzung",
@@ -60,7 +60,7 @@
       "menu.document": "Dokument übersetzen",
       "ask.language": "Zielsprache",
       "error.empty": "Markieren Sie zuerst Text, oder übersetzen Sie das ganze Dokument",
-      "settings.prompt": "Der Prompt an das Modell. {{language}} ist Ihre Zielsprache, {{text}} die Stelle für den Ausgangstext."
+      "settings.prompt": "Der Prompt an das Modell. ${language} ist Ihre Zielsprache, ${text} die Stelle für den Ausgangstext."
     },
     "fr": {
       "AI Translate": "Traduction IA",
@@ -69,7 +69,7 @@
       "menu.document": "Traduire le document",
       "ask.language": "Langue cible",
       "error.empty": "Sélectionnez d’abord du texte, ou traduisez tout le document",
-      "settings.prompt": "L’invite envoyée au modèle. {{language}} est la langue choisie, {{text}} l’emplacement du texte source."
+      "settings.prompt": "L’invite envoyée au modèle. ${language} est la langue choisie, ${text} l’emplacement du texte source."
     },
     "it": {
       "AI Translate": "Traduzione IA",
@@ -78,7 +78,7 @@
       "menu.document": "Traduci il documento",
       "ask.language": "Lingua di destinazione",
       "error.empty": "Seleziona prima del testo, oppure traduci l’intero documento",
-      "settings.prompt": "Il prompt inviato al modello. {{language}} è la lingua scelta, {{text}} il posto del testo di partenza."
+      "settings.prompt": "Il prompt inviato al modello. ${language} è la lingua scelta, ${text} il posto del testo di partenza."
     },
     "ru": {
       "AI Translate": "ИИ-перевод",
@@ -87,7 +87,7 @@
       "menu.document": "Перевести документ",
       "ask.language": "Язык перевода",
       "error.empty": "Сначала выделите текст или переведите весь документ",
-      "settings.prompt": "Запрос к модели. {{language}} — выбранный язык, {{text}} — место для исходного текста."
+      "settings.prompt": "Запрос к модели. ${language} — выбранный язык, ${text} — место для исходного текста."
     },
     "es": {
       "AI Translate": "Traducción con IA",
@@ -96,7 +96,7 @@
       "menu.document": "Traducir el documento",
       "ask.language": "Idioma de destino",
       "error.empty": "Selecciona primero algo de texto, o traduce el documento entero",
-      "settings.prompt": "La instrucción enviada al modelo. {{language}} es el idioma elegido; {{text}}, el lugar del texto original."
+      "settings.prompt": "La instrucción enviada al modelo. ${language} es el idioma elegido; ${text}, el lugar del texto original."
     },
     "pt": {
       "AI Translate": "Tradução com IA",
@@ -105,7 +105,7 @@
       "menu.document": "Traduzir o documento",
       "ask.language": "Idioma de destino",
       "error.empty": "Selecione primeiro algum texto, ou traduza o documento inteiro",
-      "settings.prompt": "A instrução enviada ao modelo. {{language}} é o idioma escolhido; {{text}}, o lugar do texto de partida."
+      "settings.prompt": "A instrução enviada ao modelo. ${language} é o idioma escolhido; ${text}, o lugar do texto de partida."
     },
     "pt_BR": {
       "AI Translate": "Tradução com IA",
@@ -114,7 +114,7 @@
       "menu.document": "Traduzir o documento",
       "ask.language": "Idioma de destino",
       "error.empty": "Selecione primeiro algum texto, ou traduza o documento inteiro",
-      "settings.prompt": "A instrução enviada ao modelo. {{language}} é o idioma escolhido; {{text}}, o lugar do texto de origem."
+      "settings.prompt": "A instrução enviada ao modelo. ${language} é o idioma escolhido; ${text}, o lugar do texto de origem."
     },
     "ar": {
       "AI Translate": "الترجمة بالذكاء الاصطناعي",
@@ -123,7 +123,7 @@
       "menu.document": "ترجمة المستند",
       "ask.language": "لغة الهدف",
       "error.empty": "حدِّد نصًّا أولًا، أو استعمل ترجمة المستند",
-      "settings.prompt": "الموجِّه المُرسَل إلى النموذج. {{language}} هي اللغة التي اخترتها، و{{text}} موضع النص الأصلي."
+      "settings.prompt": "الموجِّه المُرسَل إلى النموذج. ${language} هي اللغة التي اخترتها، و${text} موضع النص الأصلي."
     }
   },
   "settings": [
@@ -131,7 +131,7 @@
       "key": "prompt",
       "title": "settings.prompt",
       "type": "text",
-      "default": "Translate the Markdown below into {{language}}.\n\nRules:\n- Preserve every Markdown construct exactly: headings, lists, tables,\n  links, images, footnotes, block quotes and front matter.\n- Do not translate code inside fences or inline code, URLs, file paths,\n  or HTML tag names.\n- Keep the same block order and the same number of blocks.\n- Return only the translated Markdown, with no preamble and no fence\n  wrapped around the whole answer.\n\nDocument:\n{{text}}"
+      "default": "Translate the Markdown below into ${language}.\n\nRules:\n- Preserve every Markdown construct exactly: headings, lists, tables,\n  links, images, footnotes, block quotes and front matter.\n- Do not translate code inside fences or inline code, URLs, file paths,\n  or HTML tag names.\n- Keep the same block order and the same number of blocks.\n- Return only the translated Markdown, with no preamble and no fence\n  wrapped around the whole answer.\n\nDocument:\n${text}"
     }
   ],
   "menus": [

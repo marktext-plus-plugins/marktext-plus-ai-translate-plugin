@@ -15,7 +15,7 @@ local COMMON_LANGUAGES = {
 
 --- The prompt used when the reader has not written one of their own.
 local DEFAULT_PROMPT = table.concat({
-  "Translate the Markdown below into {{language}}.",
+  "Translate the Markdown below into ${language}.",
   "",
   "Rules:",
   "- Preserve every Markdown construct exactly: headings, lists, tables,",
@@ -27,7 +27,7 @@ local DEFAULT_PROMPT = table.concat({
   "  wrapped around the whole answer.",
   "",
   "Document:",
-  "{{text}}",
+  "${text}",
 }, "\n")
 
 --- Every occurrence of `needle` replaced with `value`.
@@ -51,7 +51,7 @@ end
 ---
 --- The template is theirs to change — a model that keeps mistranslating a
 --- particular kind of document is fixed by saying so in the prompt, and
---- nobody can do that from outside the plugin. `{{text}}` is where the source
+--- nobody can do that from outside the plugin. `${text}` is where the source
 --- goes; a template that forgets it gets the source appended, because a
 --- prompt with nothing to translate in it is worse than an untidy one.
 local function build_prompt(text, language)
@@ -59,11 +59,11 @@ local function build_prompt(text, language)
   if template == nil or template == "" then
     template = DEFAULT_PROMPT
   end
-  local prompt = replace(template, "{{language}}", language)
-  if prompt:find("{{text}}", 1, true) == nil then
+  local prompt = replace(template, "${language}", language)
+  if prompt:find("${text}", 1, true) == nil then
     return prompt .. "\n\n" .. text
   end
-  return replace(prompt, "{{text}}", text)
+  return replace(prompt, "${text}", text)
 end
 
 --- The blocks of the document being translated, kept between calls.
