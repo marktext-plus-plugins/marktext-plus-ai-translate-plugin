@@ -2,7 +2,7 @@
   "id": "com.marktextplus.ai-translate",
   "name": "AI Translate",
   "description": "plugin.description",
-  "version": "0.1.4",
+  "version": "0.1.3",
   "runtime": "lua",
   "entrypoint": "plugin.lua",
   "minAppVersion": "1.6.1",

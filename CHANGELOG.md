@@ -2,7 +2,18 @@
 
 ## [0.1.3] - 2026-09-03
 
-Pre-release.
+Pre-release, and updated in place while it stays one — the tag does not move
+for every change to something that has not settled.
+
+### Updated 2026-09-04
+
+- **It says what it is, in the plugin list**, in the twelve languages the
+  application ships. The list had only a name to show; the five languages here
+  covered fewer than half its readers.
+- **The pane opens before the first request rather than after it**, so it says
+  it is working instead of sitting empty for the seconds the first paragraph
+  takes. The editor reads a pane action ahead of an `ai` one, so returning
+  both means "put this up, then go and ask".
 
 ### Changed
 
