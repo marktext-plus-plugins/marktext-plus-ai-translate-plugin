@@ -1,5 +1,48 @@
 # Changelog
 
+## [0.1.4] - 2026-09-05
+
+The first release rather than a pre-release, and the plugin is **AI
+Assistant**: writing, proofreading and translation. Same repository and same
+id, so it arrives as an update.
+
+Still 0.x. The editor's plugin protocol is settling but not settled, and this
+plugin follows it.
+
+### Added
+
+- **AI writing.** Right-click, say what it should do — or take one of the
+  usual answers — and the rewrite appears in a pane with an Apply button. With
+  nothing selected it rewrites the document; with nothing in the document it
+  is a blank page, which is what the side bar icon is for.
+- **AI proofreading.** Spelling, typing slips, grammar and punctuation, and
+  nothing else: the voice is the author's. Nothing to answer, because
+  correcting mistakes is the whole brief.
+- **Shown before applied.** What a model returns is worth reading before it
+  lands in what you were writing, and Apply goes through the editor's history,
+  so one press of undo takes it back.
+- **Six prompts, all yours.** A system prompt and a user prompt for each
+  command — what the model is, and what it is being given, are two different
+  things to want to change. `{{text}}` is where the source goes,
+  `{{language}}` what you chose, `{{instruction}}` what you asked for.
+- **An icon in the right side bar**, for writing without selecting anything
+  first.
+
+### Changed
+
+- Translation now sends paragraphs in batches rather than one request each: a
+  long document was dozens of round trips for text that fits in a handful. A
+  fenced block is never cut, a paragraph over the budget still travels alone,
+  and a heading is never sent by itself.
+- The pane opens before the first request rather than after it, so it says it
+  is working instead of sitting empty.
+- Twelve languages, matching the editor's.
+
+### Requires
+
+MarkText Plus **v1.6.1** or newer. Applying a rewrite needs the editor to let
+a plugin write to the document, which older versions do not.
+
 ## [0.1.3] - 2026-09-03
 
 Pre-release, and updated in place while it stays one — the tag does not move

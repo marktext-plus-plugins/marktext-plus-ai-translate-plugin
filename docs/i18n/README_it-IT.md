@@ -1,26 +1,37 @@
-# Estensione di traduzione IA per MarkText Plus
+# Assistente IA per MarkText Plus
 
 Applicazione principale: [MarkText Plus](https://github.com/SugarFatFree/marktext-plus)
 
 [English](../../README.md) | [简体中文](README_zh-CN.md) | [日本語](README_ja-JP.md) | [한국어](README_ko-KR.md) | [Deutsch](README_de-DE.md) | [Français](README_fr-FR.md) | Italiano | [Русский](README_ru-RU.md) | [Español](README_es-ES.md) | [Português](README_pt-PT.md) | [العربية](README_ar-SA.md) | [Português (Brasil)](README_pt-BR.md)
 
-Traduce la selezione, o l'intero documento, tramite il modello che avete configurato in MarkText Plus. Richiede MarkText Plus 1.6.1 o successivo.
+Scrivere, correggere e tradurre con il modello che hai configurato in MarkText Plus. Richiede MarkText Plus 1.6.1 o successivo.
 
-Questo repository non è deliberatamente verificato da MarkText Plus. Leggete il sorgente prima di installarlo — sono due file brevi.
+Questo repository non è verificato da MarkText Plus, di proposito. Leggi il sorgente prima di installarlo: sono quattro file brevi.
+
+**Ancora 0.x.** Il protocollo delle estensioni dell’editor si sta assestando ma non è assestato, e questa estensione lo segue.
 
 ## Che cosa fa
 
-Fate clic destro nell'editor. Con del testo selezionato compare **Traduci la selezione**; senza nulla di selezionato, **Traduci il documento**. Ciascuna voce appare solo quando è pertinente, così non vi viene mai proposta quella che non intendevate.
+Clic destro nell’editor.
 
-La lingua di destinazione viene chiesta una volta — le più comuni sono lì da premere, e quello che digitate al loro posto viene preso così com'è — e la risposta viene ricordata per la volta successiva.
+| Voce | Che cosa fa |
+|---|---|
+| **Scrittura IA** | Dì che cosa deve fare — o prendi una delle risposte solite — e riscrive ciò che hai selezionato. Senza selezione riscrive il documento; con il documento vuoto scrive dalla tua sola indicazione |
+| **Correzione IA** | Ortografia, errori di battitura, grammatica e punteggiatura, nient’altro: la voce è di chi scrive. Niente da rispondere, perché correggere è tutto il compito |
+| **Traduci la selezione** | Compare solo quando qualcosa è selezionato |
+| **Traduci il documento** | Compare solo quando non lo è |
 
-Una selezione tradotta torna in una piccola finestra con un pulsante per copiare. Un documento tradotto si apre in un pannello accanto al vostro testo, dove potete leggerlo a fronte dell'originale. **Nel vostro documento non viene scritto nulla**: una traduzione che non avete ancora letto non è una modifica che avete chiesto.
+Nella barra laterale destra c’è anche un’icona per scrivere: la via d’ingresso quando non c’è nulla di selezionato e nulla di aperto.
+
+**Scrittura e correzione mostrano il risultato prima che vada da qualche parte.** Compare in un riquadro accanto al testo con un pulsante Applica; applicare passa per la cronologia dell’editor, e un annulla lo riporta indietro. Ciò che un modello restituisce merita di essere letto prima di finire in quello che stavi scrivendo.
+
+**La traduzione non offre nulla da applicare.** Sostituire un documento con la sua traduzione non è ciò che qualcuno intende per «tradurre»: viene mostrata per essere letta e copiata. Un documento intero è tradotto a gruppi e compare mentre arriva — vedi l’inizio mentre la fine è ancora per strada, e un errore costa un gruppo anziché il file. È disegnata come stai leggendo: come sorgente accanto alla vista sorgente, resa accanto all’anteprima.
 
 ## Come funziona
 
-Due file: [`plugin.lua`](../../plugin.lua) e [`lib/marktext-plus.lua`](../../lib/marktext-plus.lua), il modulo API dell'SDK che `plugin.lua` carica con `require`, nessuna compilazione, nessuna dipendenza, identico su Windows, macOS e Linux. Gira dentro l'editor in una sandbox senza file system, senza rete e senza la libreria `os`.
+Quattro file: [`plugin.lua`](../../plugin.lua), il modulo API dell’SDK [`lib/marktext-plus.lua`](../../lib/marktext-plus.lua), [`lib/prompts.lua`](../../lib/prompts.lua), che tiene i prompt e le tue modifiche, e [`lib/blocks.lua`](../../lib/blocks.lua), che divide un documento in paragrafi e li raggruppa in richieste. `plugin.lua` li carica con `require`. Nessuna build, nessuna dipendenza, uguale su Windows, macOS e Linux. Gira in una sandbox dentro l’editor, senza file system, senza rete e senza libreria `os`: `require` arriva soltanto dentro la cartella dell’estensione stessa.
 
-**Il prompt sta qui, nell'estensione**, ed è ciò che tiene davvero insieme il Markdown:
+**I prompt stanno qui, nell’estensione**, e sono loro a tenere intatto il Markdown:
 
 ```
 - Preserve every Markdown construct exactly: headings, lists, tables,
@@ -30,31 +41,43 @@ Due file: [`plugin.lua`](../../plugin.lua) e [`lib/marktext-plus.lua`](../../lib
 - Keep the same block order and the same number of blocks.
 ```
 
-La chiave API la custodisce l'editor, ed è l'editor a inviare la richiesta; l'estensione non la vede mai e non scrive nulla in rete per conto proprio. Al modello viene sottoposto esattamente il testo qui sopra seguito dal vostro documento.
+L’editor tiene la tua chiave API e fa la richiesta; l’estensione non la vede mai e non tocca la rete da sé.
 
 ## Che cosa chiede
 
 | Permesso | Perché |
 |---|---|
-| `document.read` | leggere il testo da tradurre |
-| `ai.chat` | interrogare il modello configurato |
-| `storage.local` | ricordare la lingua di destinazione |
-| `ui.contextMenu` | le due voci del clic destro |
-| `ui.settings` | la propria pagina di impostazioni |
-| `ui.notifications` | dire quando non c'è nulla di selezionato |
+| `document.read` | il testo su cui lavorare |
+| `document.write` | per applicare una riscrittura, e solo quando premi Applica |
+| `ai.chat` | per interrogare il modello che hai configurato |
+| `storage.local` | per ricordare i tuoi prompt e la lingua di destinazione |
+| `ui.contextMenu` | le quattro voci del clic destro |
+| `ui.sidebar` | l’icona di scrittura |
+| `ui.settings` | la sua pagina di impostazioni |
+| `ui.notifications` | per dire quando non c’è nulla su cui lavorare |
 
-Non chiede `document.write`, quindi non può modificare il vostro documento nemmeno provandoci, e non chiede `network.request`, quindi non può mandare il vostro testo da nessuna parte dove l'editor non l'abbia già mandato.
+Non chiede `network.request`, quindi non può mandare il tuo testo dove l’editor non l’ha mandato. `document.write` lo verifica l’editor quando premi Applica, non sulla parola dell’estensione.
 
 ## Impostazioni
 
-Un solo campo, nella sua pagina di impostazioni: la lingua di destinazione predefinita, che compila per voi e aggiorna ogni volta che ne scegliete un'altra.
+Sei campi, sulla sua pagina: un prompt di sistema e uno utente per ciascuno dei tre comandi. Che cosa sia il modello e che cosa gli si dia sono due cose diverse da voler cambiare — e un modello che continua a tradurre male un certo tipo di documento si aggiusta dicendolo nel prompt, cosa che da fuori dell’estensione non può fare nessuno.
+
+| Segnaposto | Riempito con |
+|---|---|
+| `{{text}}` | il testo su cui si lavora |
+| `{{language}}` | la lingua di destinazione scelta |
+| `{{instruction}}` | ciò che hai chiesto alla scrittura |
+
+Un modello che dimentica `{{text}}` si vede aggiungere il testo in coda, perché un prompt senza nulla su cui lavorare è peggio di uno disordinato. Ogni campo mostra il proprio valore predefinito, così vedi che cosa stai cambiando; svuotarlo lo ripristina.
+
+Doppie graffe anziché `${...}`: quella forma è interpolazione in Dart, nelle stringhe template di JavaScript e nella shell, e `$` è anche il delimitatore di KaTeX, che questo editor disegna.
 
 ## Lingue
 
-Le voci di menu e le domande sono fornite in English, 简体中文, 日本語, Deutsch e Français. Aggiungerne un'altra sono poche righe in `locales` dentro [`manifest.json`](../../manifest.json) — le pull request sono benvenute.
+Dodici, come l’editor: English, 简体中文, 日本語, 한국어, Deutsch, Français, Italiano, Русский, Español, Português, Português (Brasil) e العربية. Aggiungerne una sono poche righe sotto `locales` in [`manifest.json`](../../manifest.json) — le pull request sono benvenute.
 
 ## Installazione
 
-Scaricate lo ZIP della release e usate **Estensioni → Installa da ZIP** in MarkText Plus, oppure trovatela con **Scopri**: questo repository porta il topic GitHub `marktext-plus-plugin`.
+Scarica lo ZIP della release e usa **Estensioni → Installa da ZIP** in MarkText Plus, oppure trovala da **Scopri**: questo repository porta il topic GitHub `marktext-plus-plugin`.
 
 Licenza MIT.
