@@ -1,7 +1,8 @@
 {
   "id": "com.marktextplus.ai-translate",
   "name": "AI Translate",
-  "version": "0.1.3",
+  "description": "plugin.description",
+  "version": "0.1.4",
   "runtime": "lua",
   "entrypoint": "plugin.lua",
   "minAppVersion": "1.6.1",
@@ -17,6 +18,8 @@
   "defaultLocale": "en",
   "locales": {
     "en": {
+      "AI Translate": "AI Translate",
+      "plugin.description": "Translate the selection, or the whole document a paragraph at a time, with the model you configured.",
       "menu.selection": "Translate selection",
       "menu.document": "Translate document",
       "ask.language": "Target language",
@@ -24,6 +27,8 @@
       "settings.target": "Default target language"
     },
     "zh": {
+      "AI Translate": "AI 翻译",
+      "plugin.description": "用你配置的大模型翻译选中内容，或逐段翻译整篇文档。",
       "menu.selection": "翻译选中内容",
       "menu.document": "翻译全文",
       "ask.language": "目标语言",
@@ -31,13 +36,26 @@
       "settings.target": "默认目标语言"
     },
     "ja": {
+      "AI Translate": "AI 翻訳",
+      "plugin.description": "設定したモデルで、選択範囲を訳すか、文書全体を段落ごとに訳します。",
       "menu.selection": "選択範囲を翻訳",
       "menu.document": "ドキュメントを翻訳",
       "ask.language": "翻訳先の言語",
       "error.empty": "先にテキストを選択するか、ドキュメント全体を翻訳してください",
       "settings.target": "既定の翻訳先言語"
     },
+    "ko": {
+      "AI Translate": "AI 번역",
+      "plugin.description": "설정한 모델로 선택한 부분을 번역하거나, 문서 전체를 문단 단위로 번역합니다.",
+      "menu.selection": "선택 영역 번역",
+      "menu.document": "문서 번역",
+      "ask.language": "대상 언어",
+      "error.empty": "먼저 텍스트를 선택하거나 문서 번역을 사용하세요",
+      "settings.target": "기본 대상 언어"
+    },
     "de": {
+      "AI Translate": "KI-Übersetzung",
+      "plugin.description": "Übersetzt die Auswahl – oder das ganze Dokument Absatz für Absatz – mit dem von Ihnen eingerichteten Modell.",
       "menu.selection": "Auswahl übersetzen",
       "menu.document": "Dokument übersetzen",
       "ask.language": "Zielsprache",
@@ -45,11 +63,67 @@
       "settings.target": "Standard-Zielsprache"
     },
     "fr": {
+      "AI Translate": "Traduction IA",
+      "plugin.description": "Traduit la sélection, ou le document entier paragraphe par paragraphe, avec le modèle que vous avez configuré.",
       "menu.selection": "Traduire la sélection",
       "menu.document": "Traduire le document",
       "ask.language": "Langue cible",
       "error.empty": "Sélectionnez d’abord du texte, ou traduisez tout le document",
       "settings.target": "Langue cible par défaut"
+    },
+    "it": {
+      "AI Translate": "Traduzione IA",
+      "plugin.description": "Traduce la selezione, o l’intero documento un paragrafo alla volta, con il modello che hai configurato.",
+      "menu.selection": "Traduci la selezione",
+      "menu.document": "Traduci il documento",
+      "ask.language": "Lingua di destinazione",
+      "error.empty": "Seleziona prima del testo, oppure traduci l’intero documento",
+      "settings.target": "Lingua di destinazione predefinita"
+    },
+    "ru": {
+      "AI Translate": "ИИ-перевод",
+      "plugin.description": "Переводит выделенное — или весь документ по абзацу — той моделью, которую вы настроили.",
+      "menu.selection": "Перевести выделенное",
+      "menu.document": "Перевести документ",
+      "ask.language": "Язык перевода",
+      "error.empty": "Сначала выделите текст или переведите весь документ",
+      "settings.target": "Язык перевода по умолчанию"
+    },
+    "es": {
+      "AI Translate": "Traducción con IA",
+      "plugin.description": "Traduce la selección, o el documento entero párrafo a párrafo, con el modelo que hayas configurado.",
+      "menu.selection": "Traducir la selección",
+      "menu.document": "Traducir el documento",
+      "ask.language": "Idioma de destino",
+      "error.empty": "Selecciona primero algo de texto, o traduce el documento entero",
+      "settings.target": "Idioma de destino predeterminado"
+    },
+    "pt": {
+      "AI Translate": "Tradução com IA",
+      "plugin.description": "Traduz a seleção, ou o documento inteiro parágrafo a parágrafo, com o modelo que configurou.",
+      "menu.selection": "Traduzir a seleção",
+      "menu.document": "Traduzir o documento",
+      "ask.language": "Idioma de destino",
+      "error.empty": "Selecione primeiro algum texto, ou traduza o documento inteiro",
+      "settings.target": "Idioma de destino predefinido"
+    },
+    "pt_BR": {
+      "AI Translate": "Tradução com IA",
+      "plugin.description": "Traduz a seleção, ou o documento inteiro parágrafo a parágrafo, com o modelo que você configurou.",
+      "menu.selection": "Traduzir a seleção",
+      "menu.document": "Traduzir o documento",
+      "ask.language": "Idioma de destino",
+      "error.empty": "Selecione primeiro algum texto, ou traduza o documento inteiro",
+      "settings.target": "Idioma de destino padrão"
+    },
+    "ar": {
+      "AI Translate": "الترجمة بالذكاء الاصطناعي",
+      "plugin.description": "يترجم ما حدَّدته، أو المستند كله فقرةً فقرة، بالنموذج الذي أعددته.",
+      "menu.selection": "ترجمة المحدَّد",
+      "menu.document": "ترجمة المستند",
+      "ask.language": "لغة الهدف",
+      "error.empty": "حدِّد نصًّا أولًا، أو استعمل ترجمة المستند",
+      "settings.target": "لغة الهدف الافتراضية"
     }
   },
   "settings": [

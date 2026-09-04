@@ -88,7 +88,20 @@ function on_command(ctx)
   local list = blocks.split(text)
   remember(list)
   storage.set("mode", ctx.view == "source" and "source" or "preview")
-  return sdk.ai(build_prompt(list[1] or text, ctx.answer))
+
+  -- The pane opens empty, before the first request rather than after it. The
+  -- editor reads `pane` ahead of `ai`, so it puts the pane up and then makes
+  -- the call — and an empty pane with a request outstanding is what the
+  -- editor draws as "working". Asking first meant nothing happened on screen
+  -- until the first block came back, which for a long paragraph is several
+  -- seconds of a menu item that appeared to do nothing.
+  return {
+    pane = "",
+    title = ctx.answer,
+    slot = "right",
+    as = storage.get("mode") or "preview",
+    ai = build_prompt(list[1] or text, ctx.answer),
+  }
 end
 
 function on_result(ctx, result)
