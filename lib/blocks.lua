@@ -23,14 +23,46 @@ local function is_blank(line)
   return true
 end
 
---- Whether this line opens or closes a fenced code block.
-local function is_fence(line)
-  local trimmed = line
-  while string.len(trimmed) > 0
-      and (trimmed:sub(1, 1) == " " or trimmed:sub(1, 1) == "\t") do
-    trimmed = trimmed:sub(2)
+--- The fence run this line begins with: its character, how long it is, and
+--- whether anything follows it. Nil when the line is not a fence.
+---
+--- What closes a block depends on what opened it: the same character, at
+--- least as long, and nothing after it. Answering only "does this line start
+--- with ``` or ~~~" and toggling let the ``` a document shows inside a ````
+--- block end that block — so the blank line underneath became a cut, and the
+--- model was handed half a program, which is the one thing this split exists
+--- to prevent.
+local function fence_run(line)
+  local i = 1
+  while line:sub(i, i) == " " or line:sub(i, i) == "\t" do
+    i = i + 1
   end
-  return trimmed:sub(1, 3) == "```" or trimmed:sub(1, 3) == "~~~"
+  local char = line:sub(i, i)
+  if char ~= "`" and char ~= "~" then return nil end
+  local length = 0
+  while line:sub(i + length, i + length) == char do
+    length = length + 1
+  end
+  if length < 3 then return nil end
+  return {
+    char = char,
+    length = length,
+    -- A closing fence carries no info string; ```js inside a block is code.
+    --
+    -- Asked with `is_blank` rather than `match("^%s*$")`: this runs on
+    -- lua_dardo, whose pattern library is its own implementation, and the
+    -- match answered nil for the empty string a bare fence leaves behind — so
+    -- no fence ever closed and every block ran to the end of the document.
+    bare = is_blank(line:sub(i + length)),
+  }
+end
+
+--- Whether [run] closes a block opened by [open].
+local function closes(run, open)
+  return run ~= nil
+      and run.char == open.char
+      and run.length >= open.length
+      and run.bare
 end
 
 --- The document as lines, without their terminators.
@@ -55,7 +87,7 @@ end
 ---@param document string
 ---@return string[]
 function M.split(document)
-  local blocks, current, fenced = {}, {}, false
+  local blocks, current, fence = {}, {}, nil
 
   local function flush()
     if #current == 0 then return end
@@ -69,15 +101,21 @@ function M.split(document)
   end
 
   for _, line in ipairs(to_lines(document)) do
-    if is_fence(line) then
+    local run = fence_run(line)
+    if fence ~= nil then
+      current[#current + 1] = line
+      if closes(run, fence) then
+        fence = nil
+        flush()
+      end
+    elseif run ~= nil then
       -- A fence opening ends whatever came before it: the paragraph above a
       -- code block is its own block, and handing the model both at once is
       -- what this split exists to avoid.
-      if not fenced then flush() end
-      fenced = not fenced
+      flush()
+      fence = run
       current[#current + 1] = line
-      if not fenced then flush() end
-    elseif is_blank(line) and not fenced then
+    elseif is_blank(line) then
       flush()
     else
       current[#current + 1] = line

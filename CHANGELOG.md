@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- **A code block containing a fence was cut in half.** Splitting a document
+  for translation ended a block on any fence at all, so the ``` a document
+  shows inside a ```` block ended it — and the blank line underneath became a
+  cut, handing the model half a program. What closes a block now depends on
+  what opened it: the same character, at least as long, with nothing after
+  it. `~~~` and ``` no longer close each other, and a ```js line inside a
+  block is code rather than the end of it.
+
 ## [0.1.4] - 2026-09-05
 
 The first release rather than a pre-release, and the plugin is **AI
