@@ -74,13 +74,12 @@ local function start_writing(ctx)
   storage.set("replaces", replaces)
   storage.set("mode", view_of(ctx))
   -- An empty document is a blank page: the instruction is the whole request.
-  return {
-    pane = "",
+  return sdk.pane("", {
     title = sdk.t("menu.write"),
     slot = "right",
     as = view_of(ctx),
     ai = prompts.writing(text, ctx.answer),
-  }
+  })
 end
 
 -- ------------------------------------------------------------ proofreading --
@@ -90,13 +89,12 @@ local function start_proofreading(ctx)
   if text == "" then return sdk.notify(sdk.t("error.empty")) end
   storage.set("replaces", replaces)
   storage.set("mode", view_of(ctx))
-  return {
-    pane = "",
+  return sdk.pane("", {
     title = sdk.t("menu.proofread"),
     slot = "right",
     as = view_of(ctx),
     ai = prompts.proofreading(text),
-  }
+  })
 end
 
 -- -------------------------------------------------------------- translation --
@@ -131,13 +129,12 @@ local function start_translation(ctx)
   -- editor reads `pane` ahead of `ai`, so it puts the pane up and then makes
   -- the call — and an empty pane with a request outstanding is what the
   -- editor draws as "working".
-  return {
-    pane = "",
+  return sdk.pane("", {
     title = ctx.answer,
     slot = "right",
     as = view_of(ctx),
     ai = prompts.translation(list[1] or text, ctx.answer),
-  }
+  })
 end
 
 -- ------------------------------------------------------------------ entry --
@@ -154,15 +151,14 @@ function on_result(ctx, result)
 
   -- Writing and proofreading offer to replace what they were looking at.
   if command == "ai.write" or command == "ai.proofread" then
-    return {
-      pane = result,
+    return sdk.pane(result, {
       title = command == "ai.write" and sdk.t("menu.write")
         or sdk.t("menu.proofread"),
       slot = "right",
       as = storage.get("mode") or "preview",
       apply = true,
       replaces = storage.get("replaces") or "",
-    }
+    })
   end
 
   local language = ctx.answer or ""
@@ -176,15 +172,14 @@ function on_result(ctx, result)
 
   -- Drawn the way the reader is reading: a translation shown as raw Markdown
   -- beside a rendered preview cannot be compared with what it sits beside.
-  local pane = {
-    pane = result,
+  local options = {
     title = language,
     slot = "right",
     as = storage.get("mode") or "preview",
     append = at > 1,
   }
   if next_block ~= nil then
-    pane.ai = prompts.translation(next_block, language)
+    options.ai = prompts.translation(next_block, language)
   end
-  return pane
+  return sdk.pane(result, options)
 end

@@ -2,6 +2,20 @@
 
 ## [Unreleased]
 
+### Internal
+
+- The copy of the API module this plugin ships had fallen five options behind
+  the SDK's — `as`, `append`, `ai`, `apply` and `replaces`, every one of them
+  added for this plugin's own features. The module is meant to be copied and
+  owned, so drifting is allowed; drifting *behind* while being the reference
+  plugin is not. It is the SDK's current file again, and the editor's test
+  suite now compares the two.
+- The panes are built with `sdk.pane` rather than as table literals. They were
+  literals because the older constructor could not carry those five options —
+  which is the situation the constructor exists to prevent, since a literal's
+  spelling is checked by nothing. Behaviour is unchanged and the thirty-four
+  tests that run this plugin say so.
+
 ### Fixed
 
 - **A code block containing a fence was cut in half.** Splitting a document
