@@ -68,7 +68,7 @@ Six champs, sur sa propre page : une invite système et une invite utilisateur p
 | `{{language}}` | la langue cible choisie |
 | `{{instruction}}` | ce que vous avez demandé à l’écriture |
 
-Un modèle qui oublie `{{text}}` se voit ajouter le texte à la fin, car une invite sans rien à traiter vaut moins qu’une invite mal rangée. Chaque champ montre sa valeur par défaut, pour que vous voyiez ce que vous changez ; le vider la remet.
+Un modèle qui oublie l’un des trois se le voit ajouter à la fin plutôt que perdu, car une invite à laquelle manque ce sur quoi elle devait travailler vaut moins qu’une invite mal rangée — le modèle répond dans les deux cas, si bien que rien ne paraît anormal alors que la réponse porte sur une question que personne n’a posée. Chaque champ montre sa valeur par défaut, pour que vous voyiez ce que vous changez ; le vider la remet.
 
 Doubles accolades plutôt que `${...}` : cette forme est de l’interpolation en Dart, dans les gabarits JavaScript et dans le shell, et `$` est aussi le délimiteur de KaTeX, que cet éditeur rend.
 

@@ -68,7 +68,7 @@ Sei campi, sulla sua pagina: un prompt di sistema e uno utente per ciascuno dei 
 | `{{language}}` | la lingua di destinazione scelta |
 | `{{instruction}}` | ciò che hai chiesto alla scrittura |
 
-Un modello che dimentica `{{text}}` si vede aggiungere il testo in coda, perché un prompt senza nulla su cui lavorare è peggio di uno disordinato. Ogni campo mostra il proprio valore predefinito, così vedi che cosa stai cambiando; svuotarlo lo ripristina.
+Un modello che dimentica uno dei tre se lo vede aggiungere in coda anziché perduto, perché un prompt a cui manca ciò su cui doveva lavorare è peggio di uno disordinato — il modello risponde comunque, così nulla sembra sbagliato mentre la risposta è a una domanda che nessuno ha posto. Ogni campo mostra il proprio valore predefinito, così vedi che cosa stai cambiando; svuotarlo lo ripristina.
 
 Doppie graffe anziché `${...}`: quella forma è interpolazione in Dart, nelle stringhe template di JavaScript e nella shell, e `$` è anche il delimitatore di KaTeX, che questo editor disegna.
 

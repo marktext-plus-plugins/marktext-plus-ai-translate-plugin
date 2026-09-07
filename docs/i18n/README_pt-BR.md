@@ -68,7 +68,7 @@ Seis campos, na sua própria página: uma instrução de sistema e uma de usuár
 | `{{language}}` | o idioma de destino escolhido |
 | `{{instruction}}` | o que você pediu à escrita |
 
-A um modelo que esqueça `{{text}}` acrescenta-se o texto no fim, porque uma instrução sem nada sobre o que trabalhar é pior do que uma desarrumada. Cada campo mostra o seu valor padrão, para que você veja o que está mudando; esvaziá-lo o restaura.
+A um modelo que esqueça qualquer um dos três acrescenta-se ele no fim, em vez de perdê-lo, porque uma instrução a que falta aquilo sobre o que deveria trabalhar é pior do que uma desarrumada — o modelo responde de qualquer forma, então nada parece errado enquanto a resposta é a uma pergunta que ninguém fez. Cada campo mostra o seu valor padrão, para que você veja o que está mudando; esvaziá-lo o restaura.
 
 Chavetas duplas em vez de `${...}`: essa forma é interpolação em Dart, nos literais de modelo do JavaScript e na linha de comandos, e `$` é ainda o delimitador do KaTeX, que este editor compõe.
 

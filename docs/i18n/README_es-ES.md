@@ -68,7 +68,7 @@ Seis campos, en su propia página: una instrucción de sistema y otra de usuario
 | `{{language}}` | el idioma de destino elegido |
 | `{{instruction}}` | lo que le pediste a la escritura |
 
-A una plantilla que olvide `{{text}}` se le añade el texto al final, porque una instrucción sin nada sobre lo que trabajar es peor que una desordenada. Cada campo muestra su valor por defecto, para que veas qué estás cambiando; vaciarlo lo restablece.
+A una plantilla que olvide cualquiera de los tres se le añade al final en lugar de perderlo, porque una instrucción a la que le falta aquello sobre lo que debía trabajar es peor que una desordenada: el modelo responde igualmente, así que nada parece mal mientras la respuesta es a una pregunta que nadie hizo. Cada campo muestra su valor por defecto, para que veas qué estás cambiando; vaciarlo lo restablece.
 
 Llaves dobles en lugar de `${...}`: esa forma es interpolación en Dart, en las plantillas de JavaScript y en el intérprete de órdenes, y `$` es además el delimitador de KaTeX, que este editor compone.
 

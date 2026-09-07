@@ -6,9 +6,12 @@
 --- or keeps rewriting in a register you did not ask for, is fixed by saying so
 --- in the prompt, and nobody can do that from outside the plugin.
 ---
---- `{{text}}` is where the source goes and `{{language}}` what was chosen. A
---- template that forgets `{{text}}` gets the source appended, because a prompt
---- with nothing to work on in it is worse than an untidy one.
+--- `{{text}}` is where the source goes, `{{instruction}}` the brief that was
+--- typed and `{{language}}` the one that was chosen. A template that forgets
+--- any of the three gets it appended rather than dropped: a prompt missing
+--- what it was meant to work on is worse than an untidy one, and the model
+--- answers either way — so nothing looks wrong while the answer is to a
+--- question nobody asked.
 
 local M = {}
 
@@ -115,14 +118,51 @@ end
 --- The editor's AI service sends one string, so the system prompt goes first
 --- and the text follows. Kept as two settings even so, because they are two
 --- different things to change: what the model is, and what it is being given.
+--- What to call a value that has to be appended because its placeholder is
+--- gone. Ordered, so a prompt reads the same way every time: `pairs` gives no
+--- order, and two runs of the same command should not differ.
+---
+--- `text` is not here — it is appended last and unlabelled, being the bulk of
+--- the message rather than a field of it.
+local APPENDED = {
+  { key = "instruction", label = "Brief" },
+  { key = "language", label = "Target language" },
+}
+
+--- Whether neither prompt mentions `{{key}}`.
+---
+--- Both are checked because they are joined before substitution: a reader who
+--- moved `{{language}}` from the user prompt into the system one has not lost
+--- it.
+local function absent(system, user, key)
+  local needle = "{{" .. key .. "}}"
+  return user:find(needle, 1, true) == nil
+      and system:find(needle, 1, true) == nil
+end
+
 local function build(system, user, values)
   local prompt = system .. "\n\n" .. user
   for key, value in pairs(values) do
     prompt = replace(prompt, "{{" .. key .. "}}", value)
   end
-  -- A template that forgot where the text goes still gets the text.
-  if values.text ~= nil and user:find("{{text}}", 1, true) == nil
-      and system:find("{{text}}", 1, true) == nil then
+  -- A template that forgot where something goes still gets it.
+  --
+  -- These prompts are the reader's to edit, and an edit that drops a
+  -- placeholder drops the reader's own input: the brief they typed a second
+  -- ago, the language they picked from a list. Silently sending a prompt
+  -- without them is worse than sending an untidy one — the model answers, so
+  -- nothing looks wrong, and the answer is to a question nobody asked.
+  --
+  -- The `text` half of this existed first. Its two siblings did not, which is
+  -- the shape this repository keeps finding: a rule applied to the branch
+  -- somebody was looking at.
+  for _, field in ipairs(APPENDED) do
+    local value = values[field.key]
+    if value ~= nil and value ~= "" and absent(system, user, field.key) then
+      prompt = prompt .. "\n\n" .. field.label .. ": " .. value
+    end
+  end
+  if values.text ~= nil and absent(system, user, "text") then
     prompt = prompt .. "\n\n" .. values.text
   end
   return prompt

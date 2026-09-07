@@ -95,10 +95,11 @@ prompt, which nobody can do from outside the plugin.
 | `{{language}}` | the target language you chose |
 | `{{instruction}}` | what you asked writing to do |
 
-A template that forgets `{{text}}` gets the text appended, because a prompt
-with nothing to work on in it is worse than an untidy one. Each field shows
-its default, so you can see what you are changing; emptying one puts the
-default back.
+A template that forgets any of the three gets it appended rather than
+dropped, because a prompt missing what it was meant to work on is worse than
+an untidy one — the model answers either way, so nothing looks wrong while
+the answer is to a question nobody asked. Each field shows its default, so you
+can see what you are changing; emptying one puts the default back.
 
 Double braces rather than `${...}`: that form is interpolation in Dart, in
 JavaScript template strings and in the shell, and `$` is also KaTeX's

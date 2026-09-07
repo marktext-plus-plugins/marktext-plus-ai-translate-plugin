@@ -68,7 +68,7 @@ Sechs Felder auf der eigenen Einstellungsseite: ein System- und ein Benutzer-Pro
 | `{{language}}` | der gewählten Zielsprache |
 | `{{instruction}}` | dem, worum Sie das Schreiben gebeten haben |
 
-Eine Vorlage, die `{{text}}` vergisst, bekommt den Text angehängt, denn ein Prompt ohne etwas zu bearbeiten ist schlimmer als ein unordentlicher. Jedes Feld zeigt seinen Standardwert, damit Sie sehen, was Sie ändern; leeren setzt ihn zurück.
+Eine Vorlage, die eines der drei vergisst, bekommt es angehängt statt verworfen, denn ein Prompt, dem fehlt, woran er arbeiten sollte, ist schlimmer als ein unordentlicher — das Modell antwortet so oder so, es sieht also nichts falsch aus, während die Antwort auf eine Frage geht, die niemand gestellt hat. Jedes Feld zeigt seinen Standardwert, damit Sie sehen, was Sie ändern; leeren setzt ihn zurück.
 
 Doppelte geschweifte Klammern statt `${...}`: jene Form ist Interpolation in Dart, in JavaScript-Template-Strings und in der Shell, und `$` ist zudem das Trennzeichen von KaTeX, das dieser Editor setzt.
 

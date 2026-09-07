@@ -15,6 +15,18 @@
 
 ### Fixed
 
+- **A template that dropped `{{instruction}}` or `{{language}}` dropped what
+  you had just told it.** The prompts are yours to edit, and one that forgets
+  `{{text}}` has always had the source appended rather than sent an empty
+  request. Its two siblings had no such net: remove `{{instruction}}` from the
+  writing template and the brief you typed a second earlier went nowhere;
+  remove `{{language}}` and the language you picked from the list did too.
+
+  Worse than an error, because there is no error. The model answers a prompt
+  that is missing them, so nothing looks wrong — the answer is simply to a
+  question nobody asked. All three are now appended if their placeholder is in
+  neither the system prompt nor the user one.
+
 - **The writing ideas were English in every language.** Asking what to write
   offers six suggestions as chips — "Make it shorter", "More formal" — and
   they were written into `prompts.lua` as sentences rather than as keys, so a
