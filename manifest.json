@@ -34,7 +34,13 @@
       "settings.proofreadingSystem": "Proofreading · system prompt",
       "settings.proofreadingUser": "Proofreading · user prompt",
       "settings.translationSystem": "Translation · system prompt",
-      "settings.translationUser": "Translation · user prompt"
+      "settings.translationUser": "Translation · user prompt",
+      "idea.clearer": "Make it clearer",
+      "idea.shorter": "Make it shorter",
+      "idea.formal": "More formal",
+      "idea.conversational": "More conversational",
+      "idea.expand": "Expand with detail",
+      "idea.list": "Turn into a list"
     },
     "zh": {
       "AI Assistant": "AI 助手",
@@ -51,7 +57,13 @@
       "settings.proofreadingSystem": "纠错 · 系统提示词",
       "settings.proofreadingUser": "纠错 · 用户提示词",
       "settings.translationSystem": "翻译 · 系统提示词",
-      "settings.translationUser": "翻译 · 用户提示词"
+      "settings.translationUser": "翻译 · 用户提示词",
+      "idea.clearer": "说得更清楚",
+      "idea.shorter": "写得更短",
+      "idea.formal": "更正式",
+      "idea.conversational": "更口语",
+      "idea.expand": "展开细节",
+      "idea.list": "改成列表"
     },
     "ja": {
       "AI Assistant": "AI アシスタント",
@@ -68,7 +80,13 @@
       "settings.proofreadingSystem": "校正 · システムプロンプト",
       "settings.proofreadingUser": "校正 · ユーザープロンプト",
       "settings.translationSystem": "翻訳 · システムプロンプト",
-      "settings.translationUser": "翻訳 · ユーザープロンプト"
+      "settings.translationUser": "翻訳 · ユーザープロンプト",
+      "idea.clearer": "もっと明確に",
+      "idea.shorter": "もっと短く",
+      "idea.formal": "より硬い文体で",
+      "idea.conversational": "より話し言葉で",
+      "idea.expand": "詳しく展開",
+      "idea.list": "箇条書きに"
     },
     "ko": {
       "AI Assistant": "AI 어시스턴트",
@@ -85,7 +103,13 @@
       "settings.proofreadingSystem": "교정 · 시스템 프롬프트",
       "settings.proofreadingUser": "교정 · 사용자 프롬프트",
       "settings.translationSystem": "번역 · 시스템 프롬프트",
-      "settings.translationUser": "번역 · 사용자 프롬프트"
+      "settings.translationUser": "번역 · 사용자 프롬프트",
+      "idea.clearer": "더 명확하게",
+      "idea.shorter": "더 짧게",
+      "idea.formal": "더 격식 있게",
+      "idea.conversational": "더 구어체로",
+      "idea.expand": "자세히 풀어서",
+      "idea.list": "목록으로"
     },
     "de": {
       "AI Assistant": "KI-Assistent",
@@ -102,7 +126,13 @@
       "settings.proofreadingSystem": "Korrektur · System-Prompt",
       "settings.proofreadingUser": "Korrektur · Benutzer-Prompt",
       "settings.translationSystem": "Übersetzung · System-Prompt",
-      "settings.translationUser": "Übersetzung · Benutzer-Prompt"
+      "settings.translationUser": "Übersetzung · Benutzer-Prompt",
+      "idea.clearer": "Klarer machen",
+      "idea.shorter": "Kürzer fassen",
+      "idea.formal": "Förmlicher",
+      "idea.conversational": "Umgangssprachlicher",
+      "idea.expand": "Ausführlicher",
+      "idea.list": "In eine Liste"
     },
     "fr": {
       "AI Assistant": "Assistant IA",
@@ -119,7 +149,13 @@
       "settings.proofreadingSystem": "Relecture · invite système",
       "settings.proofreadingUser": "Relecture · invite utilisateur",
       "settings.translationSystem": "Traduction · invite système",
-      "settings.translationUser": "Traduction · invite utilisateur"
+      "settings.translationUser": "Traduction · invite utilisateur",
+      "idea.clearer": "Rendre plus clair",
+      "idea.shorter": "Raccourcir",
+      "idea.formal": "Plus formel",
+      "idea.conversational": "Plus familier",
+      "idea.expand": "Développer",
+      "idea.list": "En liste"
     },
     "it": {
       "AI Assistant": "Assistente IA",
@@ -136,7 +172,13 @@
       "settings.proofreadingSystem": "Correzione · prompt di sistema",
       "settings.proofreadingUser": "Correzione · prompt utente",
       "settings.translationSystem": "Traduzione · prompt di sistema",
-      "settings.translationUser": "Traduzione · prompt utente"
+      "settings.translationUser": "Traduzione · prompt utente",
+      "idea.clearer": "Rendere più chiaro",
+      "idea.shorter": "Accorciare",
+      "idea.formal": "Più formale",
+      "idea.conversational": "Più colloquiale",
+      "idea.expand": "Ampliare",
+      "idea.list": "In elenco"
     },
     "ru": {
       "AI Assistant": "ИИ-помощник",
@@ -153,7 +195,13 @@
       "settings.proofreadingSystem": "Вычитка · системный запрос",
       "settings.proofreadingUser": "Вычитка · пользовательский запрос",
       "settings.translationSystem": "Перевод · системный запрос",
-      "settings.translationUser": "Перевод · пользовательский запрос"
+      "settings.translationUser": "Перевод · пользовательский запрос",
+      "idea.clearer": "Сделать яснее",
+      "idea.shorter": "Сделать короче",
+      "idea.formal": "Более формально",
+      "idea.conversational": "Более разговорно",
+      "idea.expand": "Раскрыть подробнее",
+      "idea.list": "Оформить списком"
     },
     "es": {
       "AI Assistant": "Asistente de IA",
@@ -170,7 +218,13 @@
       "settings.proofreadingSystem": "Corrección · instrucción de sistema",
       "settings.proofreadingUser": "Corrección · instrucción de usuario",
       "settings.translationSystem": "Traducción · instrucción de sistema",
-      "settings.translationUser": "Traducción · instrucción de usuario"
+      "settings.translationUser": "Traducción · instrucción de usuario",
+      "idea.clearer": "Hacerlo más claro",
+      "idea.shorter": "Acortarlo",
+      "idea.formal": "Más formal",
+      "idea.conversational": "Más coloquial",
+      "idea.expand": "Ampliar con detalle",
+      "idea.list": "Convertir en lista"
     },
     "pt": {
       "AI Assistant": "Assistente de IA",
@@ -187,7 +241,13 @@
       "settings.proofreadingSystem": "Revisão · instrução de sistema",
       "settings.proofreadingUser": "Revisão · instrução de utilizador",
       "settings.translationSystem": "Tradução · instrução de sistema",
-      "settings.translationUser": "Tradução · instrução de utilizador"
+      "settings.translationUser": "Tradução · instrução de utilizador",
+      "idea.clearer": "Tornar mais claro",
+      "idea.shorter": "Encurtar",
+      "idea.formal": "Mais formal",
+      "idea.conversational": "Mais coloquial",
+      "idea.expand": "Desenvolver com detalhe",
+      "idea.list": "Transformar em lista"
     },
     "pt_BR": {
       "AI Assistant": "Assistente de IA",
@@ -204,7 +264,13 @@
       "settings.proofreadingSystem": "Revisão · instrução de sistema",
       "settings.proofreadingUser": "Revisão · instrução de usuário",
       "settings.translationSystem": "Tradução · instrução de sistema",
-      "settings.translationUser": "Tradução · instrução de usuário"
+      "settings.translationUser": "Tradução · instrução de usuário",
+      "idea.clearer": "Deixar mais claro",
+      "idea.shorter": "Encurtar",
+      "idea.formal": "Mais formal",
+      "idea.conversational": "Mais coloquial",
+      "idea.expand": "Detalhar mais",
+      "idea.list": "Transformar em lista"
     },
     "ar": {
       "AI Assistant": "مساعد الذكاء الاصطناعي",
@@ -221,7 +287,13 @@
       "settings.proofreadingSystem": "التدقيق · موجِّه النظام",
       "settings.proofreadingUser": "التدقيق · موجِّه المستخدم",
       "settings.translationSystem": "الترجمة · موجِّه النظام",
-      "settings.translationUser": "الترجمة · موجِّه المستخدم"
+      "settings.translationUser": "الترجمة · موجِّه المستخدم",
+      "idea.clearer": "اجعله أوضح",
+      "idea.shorter": "اجعله أقصر",
+      "idea.formal": "أكثر رسمية",
+      "idea.conversational": "أقرب إلى المحكية",
+      "idea.expand": "وسّعه بالتفاصيل",
+      "idea.list": "حوّله إلى قائمة"
     }
   },
   "settings": [

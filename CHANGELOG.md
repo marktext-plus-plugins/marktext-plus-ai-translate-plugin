@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- **The writing ideas were English in every language.** Asking what to write
+  offers six suggestions as chips — "Make it shorter", "More formal" — and
+  they were written into `prompts.lua` as sentences rather than as keys, so a
+  reader working in Japanese was asked a Japanese question and handed English
+  answers. They are `locales` keys now, translated into all twelve.
+
 ### Internal
 
 - The copy of the API module this plugin ships had fallen five options behind

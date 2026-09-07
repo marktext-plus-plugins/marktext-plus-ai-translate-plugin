@@ -68,7 +68,8 @@ end
 
 local function start_writing(ctx)
   if ctx.answer == nil then
-    return sdk.ask(sdk.t("ask.instruction"), { choices = prompts.WRITING_IDEAS })
+    return sdk.ask(sdk.t("ask.instruction"),
+      { choices = prompts.writing_ideas(sdk.t) })
   end
   local text, replaces = subject(ctx)
   storage.set("replaces", replaces)

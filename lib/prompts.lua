@@ -14,14 +14,27 @@ local M = {}
 
 --- Ideas offered as chips when asking what to write. Not a cage: anything
 --- typed instead is used as it stands.
-M.WRITING_IDEAS = {
-  "Make it clearer",
-  "Make it shorter",
-  "More formal",
-  "More conversational",
-  "Expand with detail",
-  "Turn into a list",
+---
+--- Keys rather than sentences: these are shown to the reader, and the reader
+--- is not necessarily reading English. Every other string this plugin shows
+--- goes through `locales`; these were the ones that did not.
+M.WRITING_IDEA_KEYS = {
+  "idea.clearer",
+  "idea.shorter",
+  "idea.formal",
+  "idea.conversational",
+  "idea.expand",
+  "idea.list",
 }
+
+--- The ideas in the reader's language. `t` is the SDK's translator.
+function M.writing_ideas(t)
+  local out = {}
+  for i, key in ipairs(M.WRITING_IDEA_KEYS) do
+    out[i] = t(key)
+  end
+  return out
+end
 
 M.DEFAULT_WRITING_SYSTEM = table.concat({
   "You rewrite Markdown to a brief the reader gives you.",
