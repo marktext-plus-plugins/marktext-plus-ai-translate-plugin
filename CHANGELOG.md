@@ -15,6 +15,22 @@
 
 ### Fixed
 
+- **A guard that did not guard, in every `blocks.lua` closure.** The editor's
+  Lua treats a valueless `return` inside a nested function as nothing at all
+  and runs the next line anyway. Four guards here were written that way. Three
+  had a second check behind them and survived by luck; the fourth sent an
+  empty request to the model. All now say `return nil`, and the SDK's README
+  documents the trap — `if not ok then return end` is how everyone writes a
+  guard, and inside `while true` the same fault is a loop with no exit.
+
+- **A heading was sent with the paragraph above it instead of the text below.**
+  Batching never breaks on a heading, so it joined whichever batch was open —
+  the one above. Then the block it introduces overflowed, broke there, and
+  went out on its own: a bare "## Results" glued to an unrelated paragraph,
+  and its own text with nothing to say what it was. Trailing headings now move
+  forward with the batch they belong to. The last batch keeps them, because
+  there is nothing after it to carry them to.
+
 - **A template that dropped `{{instruction}}` or `{{language}}` dropped what
   you had just told it.** The prompts are yours to edit, and one that forgets
   `{{text}}` has always had the source appended rather than sent an empty

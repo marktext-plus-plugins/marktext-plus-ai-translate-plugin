@@ -11,6 +11,13 @@
 --- `%s` and `%S` classes, and raises on `#someString`. The first three failed
 --- silently, and a split that returns nothing looks exactly like a document
 --- with one block in it.
+---
+--- `return nil` rather than a bare `return`, everywhere below. In a nested
+--- function the editor's Lua treats a valueless `return` as nothing at all
+--- and carries straight on to the next statement — so a guard written the way
+--- every Lua programmer writes it does not guard. Inside `while true` the
+--- same fault is a loop with no exit, which the reader experiences as the
+--- editor hanging.
 
 local M = {}
 
@@ -90,7 +97,7 @@ function M.split(document)
   local blocks, current, fence = {}, {}, nil
 
   local function flush()
-    if #current == 0 then return end
+    if #current == 0 then return nil end
     local text = table.concat(current, "\n")
     local empty = true
     for _, line in ipairs(current) do
@@ -159,8 +166,46 @@ function M.batch(blocks, budget)
   budget = budget or M.BUDGET
   local batches, current, size = {}, {}, 0
 
+  -- Closes the batch, but hands any trailing headings to the next one.
+  --
+  -- A heading goes with the text *under* it. Never flushing on a heading put
+  -- it in whatever batch was open, which is the batch above — and then the
+  -- block it introduces overflowed, flushed, and started a request of its own.
+  -- The heading travelled with a paragraph it had nothing to do with while its
+  -- own text went out unintroduced: the same failure the rule exists to
+  -- prevent, one block further along.
+  --
+  -- Consecutive headings move together; a batch that is nothing but headings
+  -- is not closed at all, since there would be nothing left to send.
   local function flush()
-    if #current == 0 then return end
+    if #current == 0 then return nil end
+    local first_trailing = #current + 1
+    while first_trailing > 1 and is_heading(current[first_trailing - 1]) do
+      first_trailing = first_trailing - 1
+    end
+    if first_trailing == 1 then return nil end
+
+    local sending, carried = {}, {}
+    for i, block in ipairs(current) do
+      if i < first_trailing then
+        sending[#sending + 1] = block
+      else
+        carried[#carried + 1] = block
+      end
+    end
+
+    batches[#batches + 1] = table.concat(sending, "\n\n")
+    current, size = carried, 0
+    for _, block in ipairs(carried) do
+      size = size + string.len(block) + 2
+    end
+  end
+
+  -- The last one sends whatever is left, headings included. Carrying them
+  -- forward at the end carries them nowhere: there is no next batch, and a
+  -- heading held back at the end of the document is a heading never sent.
+  local function flush_last()
+    if #current == 0 then return nil end
     batches[#batches + 1] = table.concat(current, "\n\n")
     current, size = {}, 0
   end
@@ -179,7 +224,7 @@ function M.batch(blocks, budget)
     current[#current + 1] = block
     size = size + length + 2
   end
-  flush()
+  flush_last()
 
   return batches
 end
