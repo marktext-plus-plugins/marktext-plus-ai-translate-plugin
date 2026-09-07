@@ -75,9 +75,12 @@ local function start_writing(ctx)
   storage.set("replaces", replaces)
   storage.set("mode", view_of(ctx))
   -- An empty document is a blank page: the instruction is the whole request.
+  -- Under the document, not beside it: a rewrite is compared with the
+  -- paragraph it rewrites, and the eye does that by dropping down a line of
+  -- the same width rather than across two narrow columns.
   return sdk.pane("", {
     title = sdk.t("menu.write"),
-    slot = "right",
+    slot = "bottom",
     as = view_of(ctx),
     ai = prompts.writing(text, ctx.answer),
   })
@@ -92,7 +95,7 @@ local function start_proofreading(ctx)
   storage.set("mode", view_of(ctx))
   return sdk.pane("", {
     title = sdk.t("menu.proofread"),
-    slot = "right",
+    slot = "bottom",
     as = view_of(ctx),
     ai = prompts.proofreading(text),
   })
@@ -155,7 +158,7 @@ function on_result(ctx, result)
     return sdk.pane(result, {
       title = command == "ai.write" and sdk.t("menu.write")
         or sdk.t("menu.proofread"),
-      slot = "right",
+      slot = "bottom",
       as = storage.get("mode") or "preview",
       apply = true,
       replaces = storage.get("replaces") or "",

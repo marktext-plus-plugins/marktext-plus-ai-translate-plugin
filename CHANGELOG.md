@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+### Changed
+
+- **Writing and proofreading open under the document rather than beside it.**
+  A rewrite is read against the paragraph it rewrites, and that comparison is
+  made by dropping down a line of the same width — not by looking across two
+  narrow columns. Both now fill the `bottom` slot, which is how a plugin says
+  "under" as of this editor version; translation still opens beside, because a
+  translation is read on its own rather than compared line for line.
+
+  The reader can flip either one back with the button in the pane's title bar.
+
 ### Fixed
 
 - **The writing ideas were English in every language.** Asking what to write
