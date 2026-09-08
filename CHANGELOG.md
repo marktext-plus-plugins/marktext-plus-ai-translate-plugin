@@ -49,6 +49,15 @@
   reader working in Japanese was asked a Japanese question and handed English
   answers. They are `locales` keys now, translated into all twelve.
 
+- **A code block containing a fence was cut in half.** Splitting a document
+  for translation ended a block on any fence at all, so the ``` a document
+  shows inside a ```` block ended it — and the blank line underneath became a
+  cut, handing the model half a program. What closes a block now depends on
+  what opened it: the same character, at least as long, with nothing after
+  it. `~~~` and ``` no longer close each other, and a ```js line inside a
+  block is code rather than the end of it.
+
+
 ### Internal
 
 - The copy of the API module this plugin ships had fallen five options behind
@@ -62,16 +71,6 @@
   which is the situation the constructor exists to prevent, since a literal's
   spelling is checked by nothing. Behaviour is unchanged and the thirty-four
   tests that run this plugin say so.
-
-### Fixed
-
-- **A code block containing a fence was cut in half.** Splitting a document
-  for translation ended a block on any fence at all, so the ``` a document
-  shows inside a ```` block ended it — and the blank line underneath became a
-  cut, handing the model half a program. What closes a block now depends on
-  what opened it: the same character, at least as long, with nothing after
-  it. `~~~` and ``` no longer close each other, and a ```js line inside a
-  block is code rather than the end of it.
 
 ## [0.1.4] - 2026-09-05
 
