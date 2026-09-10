@@ -15,6 +15,21 @@
 
 ### Fixed
 
+- **A document that itself contained `{{instruction}}` had it replaced by the
+  brief you just typed.** The prompt was filled one placeholder at a time, so
+  each replacement was scanned again by the next: once the document went in as
+  `{{text}}`, the round that filled `{{instruction}}` found the reader's braces
+  inside it. Measured — a document reading `A: {{instruction}}` reached the
+  model as `A: MAKE-IT-SHORT`, and the rewrite came back with that in it.
+  Anyone writing about Jinja, Handlebars, Vue or this plugin's own prompt
+  settings writes `{{...}}` all day.
+
+  Which key won depended on the order `pairs` happened to give, so only one of
+  the three commands showed it and the same document could differ between
+  runs. The template is now walked once: a value goes into the output and is
+  never looked at again. A `{{name}}` the plugin has no value for is left as it
+  stands — the prompts are yours to edit and the braces may be yours too.
+
 - **A translated document was left behind in this plugin's settings file.**
   Translating works through the document a batch at a time, and what has not
   been sent yet has to survive between two calls — storage is the only place

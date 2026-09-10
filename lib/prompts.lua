@@ -89,20 +89,43 @@ M.DEFAULT_TRANSLATION_SYSTEM = table.concat({
 
 M.DEFAULT_TRANSLATION_USER = "Document:\n{{text}}"
 
---- Every occurrence of `needle` replaced with `value`.
+--- The template with every `{{key}}` it names replaced, in one pass.
 ---
---- Written with find and sub rather than gsub: the replacement is a document,
---- and gsub reads `%` in a replacement as an escape. A paragraph containing
---- "100%" would come out mangled, or raise.
-local function replace(subject, needle, value)
+--- One pass is the whole point. Filling the placeholders one key at a time
+--- means each replacement is scanned again by the next, so a `{{language}}`
+--- **in the reader's own document** was replaced along with the one in the
+--- template — and a `{{instruction}}` in it was replaced by the brief they had
+--- just typed. Measured: a document reading `A: {{instruction}}` reached the
+--- model as `A: MAKE-IT-SHORT`, the rewrite came back with the corruption in
+--- it, and Apply wrote that into the document. Anyone writing about Jinja,
+--- Handlebars, Vue or this plugin's own prompts writes `{{...}}` all day.
+---
+--- Which key won depended on the order `pairs` happened to give — so the same
+--- command on the same document could differ between runs, and only one of the
+--- three commands showed it. Walking the template instead settles both: a
+--- value goes into the output and is never looked at again.
+---
+--- Written with find and sub rather than gsub: the value is a document, and
+--- gsub reads `%` in a replacement as an escape, so a paragraph containing
+--- "100%" would come out mangled or raise.
+---
+--- A `{{name}}` the caller has no value for is left as it stands. The prompts
+--- are the reader's to edit and the braces may be theirs.
+local function fill(template, values)
   local out, pos = "", 1
   while true do
-    local at, stop = subject:find(needle, pos, true)
-    if at == nil then
-      return out .. subject:sub(pos)
+    local at = template:find("{{", pos, true)
+    if at == nil then return out .. template:sub(pos) end
+    local stop = template:find("}}", at + 2, true)
+    if stop == nil then return out .. template:sub(pos) end
+    local value = values[template:sub(at + 2, stop - 1)]
+    out = out .. template:sub(pos, at - 1)
+    if value ~= nil then
+      out = out .. value
+    else
+      out = out .. template:sub(at, stop + 1)
     end
-    out = out .. subject:sub(pos, at - 1) .. value
-    pos = stop + 1
+    pos = stop + 2
   end
 end
 
@@ -141,10 +164,7 @@ local function absent(system, user, key)
 end
 
 local function build(system, user, values)
-  local prompt = system .. "\n\n" .. user
-  for key, value in pairs(values) do
-    prompt = replace(prompt, "{{" .. key .. "}}", value)
-  end
+  local prompt = fill(system .. "\n\n" .. user, values)
   -- A template that forgot where something goes still gets it.
   --
   -- These prompts are the reader's to edit, and an edit that drops a
