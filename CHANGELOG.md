@@ -15,6 +15,22 @@
 
 ### Fixed
 
+- **A translated document was left behind in this plugin's settings file.**
+  Translating works through the document a batch at a time, and what has not
+  been sent yet has to survive between two calls — storage is the only place
+  there is, so the document goes in there. That part is right. What was
+  missing is letting go of it afterwards: measured on a 210 KB document,
+  209 636 bytes of it stayed in `settings.json` once the translation had
+  finished, for as long as the plugin stayed installed, and nothing read it
+  again or said it was there.
+
+  The copy is dropped as the last batch goes out. A translation abandoned
+  half-way still leaves one, and the next translation overwrites it; what must
+  not happen is a *finished* translation keeping the reader's document on
+  disk. The editor now also writes a line to its log when any plugin's
+  settings file passes four megabytes, which is far above anything that is
+  actually settings.
+
 - **A guard that did not guard, in every `blocks.lua` closure.** The editor's
   Lua treats a valueless `return` inside a nested function as nothing at all
   and runs the next line anyway. Four guards here were written that way. Three

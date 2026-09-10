@@ -26,6 +26,12 @@ local COMMON_LANGUAGES = {
 --- "\1" in a Lua literal is a numeric escape, not a backslash and a one.
 local SEPARATOR = string.char(1)
 
+--- Kept only while there is more to send.
+---
+--- The copy is dropped as soon as the last batch has gone out — see the end of
+--- `on_result`. A translation the reader walks away from mid-way still leaves
+--- one behind, and the next translation overwrites it; what must not happen is
+--- a finished translation leaving the document on disk indefinitely.
 local function remember(list)
   storage.set("blocks", table.concat(list, SEPARATOR))
   storage.set("at", "1")
@@ -173,6 +179,16 @@ function on_result(ctx, result)
   local at = tonumber(storage.get("at") or "1")
   local next_block = block_at(at + 1)
   storage.set("at", tostring(at + 1))
+
+  -- The last batch is out, so let go of the copy. Storage is a file in the
+  -- plugin's own directory, and what was kept here is the whole document:
+  -- translating 210 KB left 210 KB of it sitting in settings.json, for as
+  -- long as the plugin stayed installed. Nothing read it again and nothing
+  -- said it was there.
+  if next_block == nil then
+    storage.set("blocks", "")
+    storage.set("at", "1")
+  end
 
   -- Drawn the way the reader is reading: a translation shown as raw Markdown
   -- beside a rendered preview cannot be compared with what it sits beside.
