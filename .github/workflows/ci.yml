@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: It parses
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The editor's own repository runs this plugin for real — it checks this
+      # one out and drives every command through the interpreter it ships. That
+      # is the test that matters, and it is not here: it runs when somebody
+      # pushes to the editor, which is not when somebody pushes to this.
+      #
+      # So this is the narrow half that belongs here: does what was just pushed
+      # parse at all. A missing `end` is otherwise found by the next person to
+      # touch a different repository.
+      - name: Install Lua
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lua5.4
+
+      # `loadfile` rather than `luac -p`: the interpreter is the one package
+      # certainly present, and a syntax error makes it return nil and a message
+      # rather than raise, which is what `assert` is here to turn into a
+      # failure.
+      - name: Every script parses
+        run: |
+          for file in $(find . -name '*.lua' -not -path './.git/*'); do
+            echo "  $file"
+            lua5.4 -e "local f, err = loadfile('$file'); assert(f, err)"
+          done
+
+      - name: The manifest is JSON, and says what it is
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          with open('manifest.json', encoding='utf-8') as handle:
+              manifest = json.load(handle)
+          missing = [k for k in ('id', 'name', 'version', 'runtime')
+                     if not manifest.get(k)]
+          if missing:
+              sys.exit(f'manifest.json is missing {missing}')
+          entry = manifest.get('entrypoint')
+          if manifest['runtime'] in ('lua', 'js') and not entry:
+              sys.exit('a script plugin needs an entrypoint')
+          print(f"{manifest['id']} {manifest['version']} ({manifest['runtime']})")
+          PY
