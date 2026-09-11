@@ -149,11 +149,28 @@ end
 
 -- ------------------------------------------------------------------ entry --
 
+-- Every command this plugin answers to, named.
+--
+-- `translate.selection` used to arrive here by not being either of the two
+-- above it: the last line was a bare `return start_translation(ctx)`, and it
+-- was correct for exactly as long as nobody added a fifth entry to the
+-- manifest. A menu item nobody had written code for would have translated the
+-- document, silently and confidently, which is worse than doing nothing.
+--
+-- The editor already refuses a command this plugin never declared, so the
+-- only way to reach the last branch is a manifest that declares one the
+-- script does not answer. CI compares the two lists now, in both directions,
+-- so that cannot be released; the message names the packaging mistake rather
+-- than addressing the reader, because a reader cannot act on it.
 function on_command(ctx)
   local command = ctx.command
   if command == "ai.write" then return start_writing(ctx) end
   if command == "ai.proofread" then return start_proofreading(ctx) end
-  return start_translation(ctx)
+  if command == "translate.document" or command == "translate.selection" then
+    return start_translation(ctx)
+  end
+  return sdk.notify("this build declares " .. tostring(command)
+    .. " but does not implement it")
 end
 
 function on_result(ctx, result)

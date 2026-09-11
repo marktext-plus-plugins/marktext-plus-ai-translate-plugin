@@ -55,3 +55,41 @@ jobs:
               sys.exit('a script plugin needs an entrypoint')
           print(f"{manifest['id']} {manifest['version']} ({manifest['runtime']})")
           PY
+
+      - name: Every command the manifest declares is one the script answers
+        run: |
+          python3 - <<'PY'
+          import json, re, sys
+
+          manifest = json.load(open('manifest.json', encoding='utf-8'))
+          declared = {
+              item['id']
+              for key in ('menus', 'panels', 'toolbar', 'commands')
+              for item in (manifest.get(key) or [])
+              if isinstance(item, dict) and item.get('id')
+          }
+          lua = open('plugin.lua', encoding='utf-8').read()
+          answered = set(re.findall(r'command\s*[=~]=\s*"([^"]+)"', lua))
+
+          # A reading that stops matching returns an empty set, and an empty set agrees
+          # with anything. Say so instead of passing.
+          if not declared:
+              sys.exit('no ids found in the manifest; the reading has drifted')
+          if not answered:
+              sys.exit('no commands found in plugin.lua; the reading has drifted')
+
+          unanswered = sorted(declared - answered)
+          if unanswered:
+              sys.exit('the manifest declares %s and plugin.lua never compares against '
+                       'them — a menu item that does nothing, or does something else'
+                       % unanswered)
+
+          unreachable = sorted(answered - declared)
+          if unreachable:
+              sys.exit('plugin.lua handles %s and the manifest declares no such '
+                       'command — the editor refuses what a plugin did not declare, so '
+                       'that branch can never run' % unreachable)
+
+          print('%d commands, declared and answered: %s'
+                % (len(declared), ', '.join(sorted(declared))))
+          PY

@@ -1,5 +1,23 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- **Every command the manifest declares is now named in the script.**
+  `translate.selection` used to arrive at the translation branch by not being
+  either of the two above it — correct for exactly as long as nobody added a
+  fifth menu entry. A menu item nobody had written code for would have
+  translated the document, silently and confidently, which is worse than doing
+  nothing. Behaviour is unchanged; what changed is that the last branch now
+  says the build declares a command it does not implement.
+
+- **CI compares the manifest's commands with the script's, in both
+  directions.** A declared command nothing answers is a menu item that does
+  nothing; a branch for a command nothing declares can never run, because the
+  editor refuses a command a plugin did not declare. Neither could be released
+  before someone noticed by using it.
+
 ## [0.1.5] - 2026-09-11
 
 ### Changed
