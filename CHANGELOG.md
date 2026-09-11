@@ -4,6 +4,16 @@
 
 ### Changed
 
+- **`scripts/pack.py` builds the archive, and it is the archive that is
+  tested.** A release was assembled by hand — somebody choosing which paths to
+  include, following what the previous one had looked like — while the
+  editor's CI zipped the whole tree. So the four tests that unpack a plugin
+  and run it were running against an archive nobody installs, and the defect
+  they exist for is exactly a hand-assembled plugin missing half of itself.
+  One definition now, in this repository, listing what goes in rather than
+  what stays out: a list of exclusions grows a hole every time a directory is
+  added.
+
 - **Every command the manifest declares is now named in the script.**
   `translate.selection` used to arrive at the translation branch by not being
   either of the two above it — correct for exactly as long as nobody added a
